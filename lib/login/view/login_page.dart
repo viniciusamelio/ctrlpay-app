@@ -176,11 +176,16 @@ class _LoginPageState extends State<LoginPage> {
                           Text("Não possui uma conta? ",
                               style: TextStyle(
                                   color: secondaryText, fontSize: 15)),
-                          Text("Crie aqui.",
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.pushNamed(context, '/signup');
+                            },
+                            child:Text("Crie aqui.",
                               style: TextStyle(
                                   color: blue,
                                   fontSize: 15,
-                                  fontWeight: FontWeight.w800)),
+                                  fontWeight: FontWeight.w800))
+                          ),
                         ],
                       )
                     ],

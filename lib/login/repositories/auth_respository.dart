@@ -1,5 +1,6 @@
 import 'package:ctrl_money/login/models/login_dto.dart';
 import 'package:ctrl_money/login/repositories/iauth_repository.dart';
+import 'package:ctrl_money/shared/config.dart';
 import 'package:ctrl_money/shared/models/token_dto.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
 import 'package:dio/dio.dart';
@@ -12,7 +13,7 @@ class AuthRepository implements IAuthRepository {
   Future<TokenDto> login(LoginDto user) async {
     try {
       final response = await _dio.post(
-          "https://ctrlpay-api-dev.herokuapp.com/api/auth",
+          "$url/auth",
           data: user.toJson());
       return TokenDto.fromJson(response.data);
     } catch (e) {

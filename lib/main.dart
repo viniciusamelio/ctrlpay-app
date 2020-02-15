@@ -1,4 +1,5 @@
 import 'package:ctrl_money/shared/styles/colors.dart';
+import 'package:ctrl_money/signup/views/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,7 +29,14 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-      home: LoginPage(),
+      routes: {
+        '/' : (context)=> LoginPage(),
+        '/login' : (context) => LoginPage(),
+        '/signup' : (context) => SignUpPage()
+      },
+      supportedLocales: [
+          const Locale('pt', 'BR'),
+    ],
     );
   }
 }
