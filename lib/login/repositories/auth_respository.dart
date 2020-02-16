@@ -1,7 +1,7 @@
 import 'package:ctrl_money/login/models/login_dto.dart';
 import 'package:ctrl_money/login/repositories/iauth_repository.dart';
 import 'package:ctrl_money/shared/config.dart';
-import 'package:ctrl_money/shared/models/token_dto.dart';
+import 'package:ctrl_money/shared/models/user_dto.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
 import 'package:dio/dio.dart';
 
@@ -10,12 +10,12 @@ class AuthRepository implements IAuthRepository {
 
   AuthRepository(this._dio);
 
-  Future<TokenDto> login(LoginDto user) async {
+  Future<UserDto> login(LoginDto user) async {
     try {
       final response = await _dio.post(
           "$url/auth",
           data: user.toJson());
-      return TokenDto.fromJson(response.data);
+      return UserDto.fromJson(response.data);
     } catch (e) {
       if (e is DioError && e != null) {
         throw e.response.data;

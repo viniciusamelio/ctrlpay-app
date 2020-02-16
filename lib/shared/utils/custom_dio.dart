@@ -1,5 +1,6 @@
 import 'package:ctrl_money/login/repositories/token_service.dart';
 import 'package:ctrl_money/shared/config.dart';
+import 'package:ctrl_money/shared/models/user_dto.dart';
 import 'package:ctrl_money/shared/services/istorage_service.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/native_imp.dart';
@@ -27,10 +28,10 @@ class CustomDio extends DioForNative {
         options.headers['Authorization'] = token;
       }
     }, onResponse: (Response response) async {
-      if (response.request.path == "${_dio.options.baseUrl}/path") {
-        Map<String, dynamic> data = response.data;
+      if (response.request.path == "${_dio.options.baseUrl}/auth") {
+        Map<String, dynamic> data = response.data;        
         if (data.containsKey("token")) {
-          await _tokenService.save(key: "token", value: data);
+          await _tokenService.save(key: "user", value: UserDto.fromJson(response.data));
         }
       }
     }));

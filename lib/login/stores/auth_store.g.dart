@@ -29,14 +29,14 @@ mixin _$AuthStore on _AuthStore, Store {
   final _$responseAtom = Atom(name: '_AuthStore.response');
 
   @override
-  ObservableFuture<TokenDto> get response {
+  ObservableFuture<UserDto> get response {
     _$responseAtom.context.enforceReadPolicy(_$responseAtom);
     _$responseAtom.reportObserved();
     return super.response;
   }
 
   @override
-  set response(ObservableFuture<TokenDto> value) {
+  set response(ObservableFuture<UserDto> value) {
     _$responseAtom.context.conditionallyRunInAction(() {
       super.response = value;
       _$responseAtom.reportChanged();

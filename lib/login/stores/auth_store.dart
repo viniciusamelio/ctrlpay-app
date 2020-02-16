@@ -1,7 +1,7 @@
+import 'package:ctrl_money/shared/models/user_dto.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ctrl_money/login/models/login_dto.dart';
 import 'package:ctrl_money/login/repositories/iauth_repository.dart';
-import 'package:ctrl_money/shared/models/token_dto.dart';
 
 
 part 'auth_store.g.dart';
@@ -23,7 +23,7 @@ abstract class _AuthStore with Store{
   }
 
   @observable 
-  ObservableFuture<TokenDto> response = ObservableFuture.value(null);
+  ObservableFuture<UserDto> response = ObservableFuture.value(null);
 
   @observable 
   bool visiblePassword = false;

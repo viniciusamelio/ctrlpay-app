@@ -14,3 +14,11 @@ validatePassword(String password){
     return "Digite uma senha com ao menos 3 caracteres";
   }
 }
+
+validateBirthdate(String date){
+  if(date.isEmpty){
+    return "Digite sua data de nascimento";
+  }else if(date.split('/').length != 3 || int.parse(date.substring(date.length-1,date.length)) > 2010){
+    return "Digite uma data de nascimento válida";
+  }
+}
