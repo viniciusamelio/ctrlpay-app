@@ -1,5 +1,5 @@
 validateEmail(String email) {
-  email = email.trim();
+  email = email.trim().replaceAll(' ', '');
   if (email.isEmpty) {
     return "Digite o e-mail";
   } else if (!email.contains('@') || !email.contains('.')) {
