@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ctrl_money/home/stores/home_store.dart';
+import 'package:ctrl_money/shared/components/navigation/navigation_block.dart';
+import 'package:ctrl_money/shared/models/user_dto.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -248,20 +253,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           physics: BouncingScrollPhysics(), 
           children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(8),
-              width: 80,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 25,),
-                  Padding(padding: EdgeInsets.only(right:2),child: Icon(FontAwesomeIcons.home, color: primaryText)),
-                  SizedBox(height: 5),
-                  Text('Início', style: TextStyle(color: primaryText))
-                ],
-              ),
-              decoration: BoxDecoration(
-                  color: secondaryBlue, borderRadius: BorderRadius.circular(4)),
-            ),
+            NavigationBlock(icon: Icon(FontAwesomeIcons.home, color: primaryText), title: 'Início'),
             Container(
               margin: EdgeInsets.all(8),
               width: 80,

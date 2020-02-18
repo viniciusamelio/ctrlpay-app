@@ -2,7 +2,6 @@ import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:date_text_masked/date_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:string_validator/string_validator.dart';
 
 class DateTextFormField extends StatefulWidget {
   final Function(DateTime) onValidate;

@@ -1,5 +1,4 @@
 import 'package:ctrl_money/signup/models/signup_dto.dart';
-import 'package:ctrl_money/signup/models/signup_response.dart';
 import 'package:ctrl_money/signup/repositories/signup_repository.dart';
 import 'package:mobx/mobx.dart';
 

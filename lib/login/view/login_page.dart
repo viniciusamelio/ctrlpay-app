@@ -3,13 +3,13 @@ import 'package:circular_check_box/circular_check_box.dart';
 import 'package:ctrl_money/home/views/home_page.dart';
 import 'package:ctrl_money/login/repositories/auth_respository.dart';
 import 'package:ctrl_money/login/stores/auth_store.dart';
+import 'package:ctrl_money/shared/services/auth_service.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
 import 'package:ctrl_money/shared/utils/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobx/mobx.dart';
 import 'package:progress_indicators/progress_indicators.dart';
@@ -25,16 +25,17 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _authStore = AuthStore(authRepository: AuthRepository(CustomDio()));
+    _authStore = AuthStore(AuthRepository(CustomDio()), AuthStorage());
     _authKey = GlobalKey<FormState>();
     super.initState();
 
-    reaction((_) => _authStore.response.status, (_) {
+    reaction((_) => _authStore.response.status, (_) async {
       if (_authStore.response.status == FutureStatus.rejected) {
         _showError(_authStore.response.result);
       } else if (_authStore.response.status == FutureStatus.fulfilled) {
-        //Get.until('/', HomePage());
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePage()));
+        await _authStore.saveUser(_authStore.response.value).whenComplete(() =>
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomePage())));
       }
     });
   }
@@ -177,15 +178,14 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                   color: secondaryText, fontSize: 15)),
                           GestureDetector(
-                            onTap: (){
-                              Navigator.pushNamed(context, '/signup');
-                            },
-                            child:Text("Crie aqui.",
-                              style: TextStyle(
-                                  color: blue,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w800))
-                          ),
+                              onTap: () {
+                                Navigator.pushNamed(context, '/signup');
+                              },
+                              child: Text("Crie aqui.",
+                                  style: TextStyle(
+                                      color: blue,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w800))),
                         ],
                       )
                     ],

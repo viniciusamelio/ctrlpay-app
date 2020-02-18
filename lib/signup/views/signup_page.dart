@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:ctrl_money/login/repositories/auth_respository.dart';
 import 'package:ctrl_money/login/stores/auth_store.dart';
+import 'package:ctrl_money/shared/services/auth_service.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
 import 'package:ctrl_money/shared/utils/validators.dart';
@@ -26,7 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     _signUpKey = GlobalKey<FormState>();
-    _authStore = AuthStore(authRepository: AuthRepository(CustomDio()));
+    _authStore = AuthStore(AuthRepository(CustomDio()), AuthStorage());
     _signUpStore = SignUpStore(SignUpRepository(CustomDio()));
     reaction((_) => _signUpStore.request.status, (_) async {
       FutureStatus status = _signUpStore.request.status;

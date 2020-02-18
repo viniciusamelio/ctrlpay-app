@@ -77,6 +77,13 @@ mixin _$AuthStore on _AuthStore, Store {
     }, _$keepConnectedAtom, name: '${_$keepConnectedAtom.name}_set');
   }
 
+  final _$saveUserAsyncAction = AsyncAction('saveUser');
+
+  @override
+  Future saveUser(UserDto user) {
+    return _$saveUserAsyncAction.run(() => super.saveUser(user));
+  }
+
   final _$_AuthStoreActionController = ActionController(name: '_AuthStore');
 
   @override
@@ -94,16 +101,6 @@ mixin _$AuthStore on _AuthStore, Store {
     final _$actionInfo = _$_AuthStoreActionController.startAction();
     try {
       return super.stayConnected();
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic saveUser(bool e) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction();
-    try {
-      return super.saveUser(e);
     } finally {
       _$_AuthStoreActionController.endAction(_$actionInfo);
     }

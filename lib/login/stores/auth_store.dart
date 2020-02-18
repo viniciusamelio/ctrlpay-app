@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:ctrl_money/shared/models/user_dto.dart';
+import 'package:ctrl_money/shared/services/istorage_service.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ctrl_money/login/models/login_dto.dart';
 import 'package:ctrl_money/login/repositories/iauth_repository.dart';
@@ -7,9 +10,7 @@ import 'package:ctrl_money/login/repositories/iauth_repository.dart';
 part 'auth_store.g.dart';
 
 class AuthStore extends _AuthStore with _$AuthStore{
-  AuthStore(
-    {IAuthRepository authRepository}
-  ) : super(authRepository);
+  AuthStore(IAuthRepository authRepository, IStorageService userStorage) : super(authRepository, userStorage);
 }
 
 abstract class _AuthStore with Store{
@@ -18,7 +19,8 @@ abstract class _AuthStore with Store{
 
   final IAuthRepository _authRepository;
   
-  _AuthStore(this._authRepository){
+  final IStorageService _userStorage;
+  _AuthStore(this._authRepository, this._userStorage){
     this.loginDto = LoginDto();
   }
 
@@ -42,10 +44,8 @@ abstract class _AuthStore with Store{
   }
 
   @action 
-  saveUser(bool e){
-    if(e){
-      //Montar lógica para salvar usuário
-    }
+  saveUser(UserDto user) async {
+    await _userStorage.save(key: "user", value:jsonEncode(user.toJson()));
   }
 
 
