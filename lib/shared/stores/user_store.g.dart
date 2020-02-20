@@ -26,10 +26,52 @@ mixin _$UserStore on _UserStore, Store {
     }, _$getRequestAtom, name: '${_$getRequestAtom.name}_set');
   }
 
+  final _$currentUserRequestAtom = Atom(name: '_UserStore.currentUserRequest');
+
+  @override
+  ObservableFuture<dynamic> get currentUserRequest {
+    _$currentUserRequestAtom.context
+        .enforceReadPolicy(_$currentUserRequestAtom);
+    _$currentUserRequestAtom.reportObserved();
+    return super.currentUserRequest;
+  }
+
+  @override
+  set currentUserRequest(ObservableFuture<dynamic> value) {
+    _$currentUserRequestAtom.context.conditionallyRunInAction(() {
+      super.currentUserRequest = value;
+      _$currentUserRequestAtom.reportChanged();
+    }, _$currentUserRequestAtom, name: '${_$currentUserRequestAtom.name}_set');
+  }
+
+  final _$userAtom = Atom(name: '_UserStore.user');
+
+  @override
+  UserDto get user {
+    _$userAtom.context.enforceReadPolicy(_$userAtom);
+    _$userAtom.reportObserved();
+    return super.user;
+  }
+
+  @override
+  set user(UserDto value) {
+    _$userAtom.context.conditionallyRunInAction(() {
+      super.user = value;
+      _$userAtom.reportChanged();
+    }, _$userAtom, name: '${_$userAtom.name}_set');
+  }
+
   final _$getAsyncAction = AsyncAction('get');
 
   @override
   Future<void> get(String id) {
     return _$getAsyncAction.run(() => super.get(id));
+  }
+
+  final _$currentUserAsyncAction = AsyncAction('currentUser');
+
+  @override
+  Future<void> currentUser() {
+    return _$currentUserAsyncAction.run(() => super.currentUser());
   }
 }

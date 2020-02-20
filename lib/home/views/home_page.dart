@@ -1,11 +1,19 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ctrl_money/home/stores/home_store.dart';
 import 'package:ctrl_money/shared/components/navigation/navigation_block.dart';
+import 'package:ctrl_money/shared/models/user_dto.dart';
+import 'package:ctrl_money/shared/repositories/user_repository.dart';
+import 'package:ctrl_money/shared/services/auth_service.dart';
+import 'package:ctrl_money/shared/stores/user_store.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
-import 'package:flutter/gestures.dart';
+import 'package:ctrl_money/shared/utils/custom_dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:mobx/mobx.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,17 +22,23 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   HomeStore _homeStore;
+  UserStore _userStore;
 
   List<Widget> _accountsList;
 
   @override
   void initState() {
     _homeStore = HomeStore();
+    _userStore = UserStore(UserRepository(CustomDio()), AuthStorage());
+
+    when((_) => _userStore.currentUserRequest.value != null, () {
+      _userStore.user =
+          UserDto.fromJson(jsonDecode(_userStore.currentUserRequest.value));
+      print(_userStore.user.email);
+    });
+
     super.initState();
   }
-
-  @override
-  void didChangeDependencies() {}
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +216,48 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.all(10),
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 40),
+                      SizedBox(height: 20),
+                      Observer(
+                        builder: (_) {
+                          return _userStore.currentUserRequest.status ==
+                                  FutureStatus.fulfilled
+                              ? Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: (){},                                      
+                                      child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle),
+                                      child: _userStore.user.avatar ?? Icon(FontAwesomeIcons.solidUser, color: secondaryBlue,),
+                                    ),
+                                    ),
+                                    SizedBox(width: 7),
+                                    Text.rich(TextSpan(children: [
+                                      TextSpan(
+                                          text: "Bem vindo(a),\n",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: secondaryText)),
+                                      TextSpan(
+                                          text:
+                                              "${_userStore.user.name.split(' ')[0]}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: blue,
+                                              fontFamily:
+                                                  GoogleFonts.fredokaOne()
+                                                      .fontFamily))
+                                    ])),
+                                  ],
+                                )
+                              : Center(
+                                  child: CircularProgressIndicator(
+                                      backgroundColor: blue),
+                                );
+                        },
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -226,7 +281,7 @@ class _HomePageState extends State<HomePage> {
                         children: <Widget>[
                           Text('Saldo total',
                               style:
-                                  TextStyle(color: secondaryText, fontSize: 16))
+                                  TextStyle(color: secondaryText, fontSize: 18))
                         ],
                       )
                     ],
@@ -235,7 +290,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 10),
             CarouselSlider(
               height: 400,
-              enableInfiniteScroll: false,              
+              enableInfiniteScroll: false,
               realPage: 2,
               viewportFraction: 1.0,
               autoPlay: false,
