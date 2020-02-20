@@ -14,24 +14,29 @@ class NavigationBlock extends StatefulWidget {
 class _NavigationBlockState extends State<NavigationBlock> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.action,
+    return InkWell(
+      onTap: widget.action ?? (){},
+      highlightColor: blue,
+      splashColor: blue,
+      radius: 4,
+      borderRadius: BorderRadius.circular(10),
       child: Container(
         margin: EdgeInsets.all(8),
         width: 80,
         child: Center(
           child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
-            widget.icon,
-            SizedBox(height: 4),
-             Text(widget.title ?? 'Title', style: TextStyle(color: primaryText))
-          ],
-        ),
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
+              widget.icon,
+              SizedBox(height: 4),
+              Text(widget.title ?? 'Title',
+                  style: TextStyle(color: primaryText))
+            ],
+          ),
         ),
         decoration: BoxDecoration(
             color: secondaryBlue, borderRadius: BorderRadius.circular(4)),
