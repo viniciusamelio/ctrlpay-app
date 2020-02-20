@@ -19,7 +19,8 @@ class MyApp extends StatelessWidget {
         backgroundColor: darker,
         cursorColor: blue, 
         fontFamily: GoogleFonts.nunito(color: primaryText).fontFamily,
-        primaryColor: blue,       
+        primaryColor: blue,
+        accentColor: lighter,
         textTheme: TextTheme(button: TextStyle(color: secondaryText)),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(),

@@ -19,15 +19,19 @@ class _NavigationBlockState extends State<NavigationBlock> {
       child: Container(
         margin: EdgeInsets.all(8),
         width: 80,
-        child: Column(
+        child: Center(
+          child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
-              height: 25,
+              height: 10,
             ),
-            Padding(padding: EdgeInsets.only(right: 2), child: widget.icon),
-            SizedBox(height: 5),
+            widget.icon,
+            SizedBox(height: 4),
              Text(widget.title ?? 'Title', style: TextStyle(color: primaryText))
           ],
+        ),
         ),
         decoration: BoxDecoration(
             color: secondaryBlue, borderRadius: BorderRadius.circular(4)),

@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ctrl_money/home/stores/home_store.dart';
 import 'package:ctrl_money/shared/components/navigation/navigation_block.dart';
-import 'package:ctrl_money/shared/models/user_dto.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,7 +24,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() {}
+
+  @override
+  Widget build(BuildContext context) {
     _accountsList = <Widget>[
       Padding(
         padding: EdgeInsets.all(20),
@@ -39,27 +38,71 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 8),
-              Container(
-                height: 30,
-                width: 30,
-                decoration: BoxDecoration(
-                    color: Colors.red[400], shape: BoxShape.circle),
-                child: Icon(FontAwesomeIcons.moneyBillWave,
-                    size: 13, color: primaryText),
-              ),
-              SizedBox(height: 10),
-              Text("Você tem N contas a pagar\nno total de R\$ 900,00",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: secondaryText, fontSize: 16)),
-              SizedBox(height: 10),
-              FlatButton(
-                child: Text(
-                  'Revisar',
-                  style: TextStyle(color: primaryText),
+              Flexible(
+                flex: 3,
+                fit: FlexFit.tight,
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(width: 10),
+                    Container(
+                      height: 50,
+                      width: 38,
+                      decoration: BoxDecoration(
+                          color: Colors.red[400], shape: BoxShape.circle),
+                      child: Icon(FontAwesomeIcons.moneyBillWave,
+                          size: 20, color: primaryText),
+                    ),
+                    SizedBox(width: 20),
+                    Text("Despesas pendentes",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: primaryText, fontSize: 18))
+                  ],
                 ),
-                color: blue,
-                onPressed: () {},
+              ),
+              Flexible(
+                  flex: 8,
+                  fit: FlexFit.tight,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("DESPESAS TOTAIS",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.red[400],
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 20)),
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("R\$0,00",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.red[400],
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 40)),
+                        )
+                      ],
+                    ),
+                  )),
+              Flexible(
+                flex: 2,
+                fit: FlexFit.tight,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: FlatButton(
+                    child: Text(
+                      'Revisar',
+                      style: TextStyle(color: primaryText, fontSize: 15),
+                    ),
+                    color: blue,
+                    onPressed: () {},
+                  ),
+                ),
               )
             ],
           ),
@@ -74,45 +117,86 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 8),
-              Container(
-                height: 30,
-                width: 30,
-                decoration:
-                    BoxDecoration(color: Colors.green, shape: BoxShape.circle),
-                child: Icon(FontAwesomeIcons.moneyBillWave,
-                    size: 13, color: primaryText),
-              ),
-              SizedBox(height: 10),
-              Text("Você tem N contas a receber\nno total de R\$ 900,00",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: secondaryText, fontSize: 16)),
-              SizedBox(height: 10),
-              FlatButton(
-                child: Text(
-                  'Revisar',
-                  style: TextStyle(color: primaryText),
+              Flexible(
+                flex: 3,
+                fit: FlexFit.tight,
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(width: 10),
+                    Container(
+                      height: 50,
+                      width: 38,
+                      decoration: BoxDecoration(
+                          color: Colors.green, shape: BoxShape.circle),
+                      child: Icon(FontAwesomeIcons.moneyBillWave,
+                          size: 20, color: primaryText),
+                    ),
+                    SizedBox(width: 20),
+                    Text("Receitas pendentes",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: primaryText, fontSize: 18))
+                  ],
                 ),
-                color: blue,
-                onPressed: () {},
+              ),
+              Flexible(
+                  flex: 8,
+                  fit: FlexFit.tight,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("RECEITAS TOTAIS",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 20)),
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("R\$0,00",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 40)),
+                        )
+                      ],
+                    ),
+                  )),
+              Flexible(
+                flex: 2,
+                fit: FlexFit.tight,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: FlatButton(
+                    child: Text(
+                      'Revisar',
+                      style: TextStyle(color: primaryText, fontSize: 15),
+                    ),
+                    color: blue,
+                    onPressed: () {},
+                  ),
+                ),
               )
             ],
           ),
         ),
       ),
     ];
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: darker,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Card(
-              margin: EdgeInsets.all(0),
-              elevation: 0.2,
+                margin: EdgeInsets.all(0),
+                elevation: 0.2,
                 color: lighter,
                 child: Padding(
                   padding: EdgeInsets.all(10),
@@ -150,7 +234,8 @@ class _HomePageState extends State<HomePage> {
                 )),
             SizedBox(height: 10),
             CarouselSlider(
-              height: 220,
+              height: 400,
+              enableInfiniteScroll: false,              
               realPage: 2,
               viewportFraction: 1.0,
               autoPlay: false,
@@ -189,61 +274,67 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: Card(
-                  color: lighter,
-                  elevation: 0,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('Contas',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: primaryText)),
-                            IconButton(                              
-                              color: Colors.green,
-                              icon: Icon(FontAwesomeIcons.plus),
-                              onPressed: () {},
-                            )
-                          ],
-                        ),
-                        Container(
-                          height: 82,
-                          child: ListView(                            
-                            reverse: false,
-                            dragStartBehavior: DragStartBehavior.start,
-                            physics: BouncingScrollPhysics(),
-                          children: <Widget>[
-                            ListTile(
-                              selected: true,
-                              leading: Container(
-                               width: 40,
-                                decoration: BoxDecoration(
-                                  color: Colors.purple,
-                                  shape: BoxShape.circle
-                                ),
-                              ),
-                              title: Text("Conta 01", style: TextStyle(color: primaryText),),
-                              subtitle: Text('Conta corrente',  style: TextStyle(color: secondaryText)),
-                              trailing: Text('R\$ 1.000,00', style: TextStyle(color: blue,fontSize: 16)),
-                            ),
-                            ListTile(
-                              title: Text("Conta 02"),
-                            )
-                          ],
-                        ),
-                        )
-                      ],
-                    ),
-                  )),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.all(20),
+            //   child: Card(
+            //       color: lighter,
+            //       elevation: 0,
+            //       child: Padding(
+            //         padding: EdgeInsets.all(10),
+            //         child: Column(
+            //           crossAxisAlignment: CrossAxisAlignment.center,
+            //           children: <Widget>[
+            //             Row(
+            //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //               children: <Widget>[
+            //                 Text('Contas',
+            //                     style: TextStyle(
+            //                         fontSize: 18,
+            //                         fontWeight: FontWeight.w700,
+            //                         color: primaryText)),
+            //                 IconButton(
+            //                   color: Colors.green,
+            //                   icon: Icon(FontAwesomeIcons.plus),
+            //                   onPressed: () {},
+            //                 )
+            //               ],
+            //             ),
+            //             Container(
+            //               height: 82,
+            //               child: ListView(
+            //                 reverse: false,
+            //                 dragStartBehavior: DragStartBehavior.start,
+            //                 physics: BouncingScrollPhysics(),
+            //                 children: <Widget>[
+            //                   ListTile(
+            //                     selected: true,
+            //                     leading: Container(
+            //                       width: 40,
+            //                       decoration: BoxDecoration(
+            //                           color: Colors.purple,
+            //                           shape: BoxShape.circle),
+            //                     ),
+            //                     title: Text(
+            //                       "Conta 01",
+            //                       style: TextStyle(color: primaryText),
+            //                     ),
+            //                     subtitle: Text('Conta corrente',
+            //                         style: TextStyle(color: secondaryText)),
+            //                     trailing: Text('R\$ 1.000,00',
+            //                         style:
+            //                             TextStyle(color: blue, fontSize: 16)),
+            //                   ),
+            //                   ListTile(
+            //                     title: Text("Conta 02"),
+            //                   )
+            //                 ],
+            //               ),
+            //             )
+            //           ],
+            //         ),
+            //       )
+            //       ),
+            // ),
           ],
         ),
       ),
@@ -251,37 +342,30 @@ class _HomePageState extends State<HomePage> {
         width: MediaQuery.of(context).size.width,
         height: 100,
         child: ListView(
-          physics: BouncingScrollPhysics(), 
+          physics: BouncingScrollPhysics(),
           children: <Widget>[
-            NavigationBlock(icon: Icon(FontAwesomeIcons.home, color: primaryText), title: 'Início'),
-            Container(
-              margin: EdgeInsets.all(8),
-              width: 80,
-              decoration: BoxDecoration(
-                  color: secondaryBlue, borderRadius: BorderRadius.circular(4)),
-            ),
-            Container(
-              margin: EdgeInsets.all(8),
-              width: 80,
-              decoration: BoxDecoration(
-                  color: secondaryBlue, borderRadius: BorderRadius.circular(4)),
-            ),
-            Container(
-              margin: EdgeInsets.all(8),
-              width: 80,
-              decoration: BoxDecoration(
-                  color: secondaryBlue, borderRadius: BorderRadius.circular(4)),
-            ),
-            Container(
-              margin: EdgeInsets.all(8),
-              width: 80,
-              decoration: BoxDecoration(
-                  color: secondaryBlue, borderRadius: BorderRadius.circular(4)),
-            ),
+            NavigationBlock(
+                icon: Icon(FontAwesomeIcons.home, color: primaryText),
+                title: 'Início'),
+            NavigationBlock(
+                icon: Icon(FontAwesomeIcons.exchangeAlt, color: primaryText),
+                title: 'Transações'),
+            NavigationBlock(
+                icon: Icon(FontAwesomeIcons.wallet, color: primaryText),
+                title: 'Carteira'),
+            NavigationBlock(
+                icon: Icon(FontAwesomeIcons.bullseye, color: primaryText),
+                title: 'Objetivos'),
+            NavigationBlock(
+                icon: Icon(FontAwesomeIcons.chartBar, color: primaryText),
+                title: 'Relatórios'),
+            NavigationBlock(
+                icon: Icon(FontAwesomeIcons.solidUser, color: primaryText),
+                title: 'Perfil'),
           ],
           primary: true,
           scrollDirection: Axis.horizontal,
-          shrinkWrap: false,          
+          shrinkWrap: false,
         ),
       ),
     );
