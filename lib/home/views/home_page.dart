@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ctrl_money/home/stores/home_store.dart';
 import 'package:ctrl_money/shared/components/navigation/navigation_block.dart';
+import 'package:ctrl_money/shared/models/user.dart';
 import 'package:ctrl_money/shared/models/user_dto.dart';
 import 'package:ctrl_money/shared/repositories/user_repository.dart';
 import 'package:ctrl_money/shared/services/auth_service.dart';
 import 'package:ctrl_money/shared/stores/user_store.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,21 +25,35 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   HomeStore _homeStore;
   UserStore _userStore;
-
+  User _user;
   List<Widget> _accountsList;
 
   @override
   void initState() {
     _homeStore = HomeStore();
     _userStore = UserStore(UserRepository(CustomDio()), AuthStorage());
-
+    _user = User.instance;
     when((_) => _userStore.currentUserRequest.value != null, () {
       _userStore.user =
           UserDto.fromJson(jsonDecode(_userStore.currentUserRequest.value));
-      print(_userStore.user.email);
+      _user.data = _userStore.user;
+    });
+
+    reaction((_) => _userStore.logoutRequest.status, (_) {
+      FutureStatus status = _userStore.logoutRequest.status;
+      if (status == FutureStatus.fulfilled) {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/login', ModalRoute.withName('/'));
+      }
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    User.dispose();
+    super.dispose();
   }
 
   @override
@@ -224,14 +240,23 @@ class _HomePageState extends State<HomePage> {
                               ? Row(
                                   children: [
                                     GestureDetector(
-                                      onTap: (){},                                      
+                                      onTap: () => Navigator.of(context)
+                                          .pushNamed('/profile'),
                                       child: Container(
-                                      height: 40,
-                                      width: 40,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle),
-                                      child: _userStore.user.avatar ?? Icon(FontAwesomeIcons.solidUser, color: secondaryBlue,),
-                                    ),
+                                        height: 50,
+                                        width: 50,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle),
+                                        child:_user.data.avatar != null ? ClipOval(
+                                          child: Image.memory(
+                                                base64Decode(_user.data.avatar),
+                                                fit: BoxFit.fill),
+                                        ) :
+                                            Icon(
+                                              FontAwesomeIcons.solidUser,
+                                              color: secondaryBlue,
+                                            ),
+                                      ),
                                     ),
                                     SizedBox(width: 7),
                                     Text.rich(TextSpan(children: [
@@ -242,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                                               color: secondaryText)),
                                       TextSpan(
                                           text:
-                                              "${_userStore.user.name.split(' ')[0]}",
+                                              "${_user.data.name.split(' ')[0]}",
                                           style: TextStyle(
                                               fontSize: 18,
                                               color: blue,
@@ -417,6 +442,13 @@ class _HomePageState extends State<HomePage> {
             NavigationBlock(
                 icon: Icon(FontAwesomeIcons.solidUser, color: primaryText),
                 title: 'Perfil'),
+            NavigationBlock(
+                action: () async {
+                  await _userStore.logout();
+                  User.dispose();
+                },
+                icon: Icon(FontAwesomeIcons.doorOpen, color: primaryText),
+                title: 'Sair')
           ],
           primary: true,
           scrollDirection: Axis.horizontal,
