@@ -36,7 +36,6 @@ class _SignUpPageState extends State<SignUpPage> {
         _authStore.loginDto.password = _signUpStore.dto.password;
         await _authStore.login();
       } else if (status == FutureStatus.rejected) {
-        print(_signUpStore.request.error);
         _showError(_signUpStore.request.error.toString());
       }
     });
@@ -44,6 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
     reaction((_) => _authStore.response.status, (_) {
       FutureStatus status = _authStore.response.status;
       if (status == FutureStatus.fulfilled) {
+        _authStore.saveUser(_authStore.response.value);
         Navigator.pushReplacementNamed(context, '/home');
       } else if (status == FutureStatus.rejected) {
         _showError(_authStore.response.error);
