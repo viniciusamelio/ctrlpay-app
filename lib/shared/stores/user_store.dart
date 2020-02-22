@@ -41,6 +41,7 @@ abstract class _UserStore with Store {
 
   @action 
   Future<void> logout() async{
+    await _userStorage.clear(key: "keep_connected");
     logoutRequest = _userStorage.clear(key: 'user').asObservable();
   }
 }

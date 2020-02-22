@@ -43,6 +43,26 @@ mixin _$AuthStore on _AuthStore, Store {
     }, _$responseAtom, name: '${_$responseAtom.name}_set');
   }
 
+  final _$keepConnectedResponseAtom =
+      Atom(name: '_AuthStore.keepConnectedResponse');
+
+  @override
+  ObservableFuture<String> get keepConnectedResponse {
+    _$keepConnectedResponseAtom.context
+        .enforceReadPolicy(_$keepConnectedResponseAtom);
+    _$keepConnectedResponseAtom.reportObserved();
+    return super.keepConnectedResponse;
+  }
+
+  @override
+  set keepConnectedResponse(ObservableFuture<String> value) {
+    _$keepConnectedResponseAtom.context.conditionallyRunInAction(() {
+      super.keepConnectedResponse = value;
+      _$keepConnectedResponseAtom.reportChanged();
+    }, _$keepConnectedResponseAtom,
+        name: '${_$keepConnectedResponseAtom.name}_set');
+  }
+
   final _$visiblePasswordAtom = Atom(name: '_AuthStore.visiblePassword');
 
   @override
@@ -77,32 +97,32 @@ mixin _$AuthStore on _AuthStore, Store {
     }, _$keepConnectedAtom, name: '${_$keepConnectedAtom.name}_set');
   }
 
+  final _$loginAsyncAction = AsyncAction('login');
+
+  @override
+  Future<dynamic> login() {
+    return _$loginAsyncAction.run(() => super.login());
+  }
+
+  final _$stayConnectedAsyncAction = AsyncAction('stayConnected');
+
+  @override
+  Future<void> stayConnected() {
+    return _$stayConnectedAsyncAction.run(() => super.stayConnected());
+  }
+
+  final _$checkStayConnectedAsyncAction = AsyncAction('checkStayConnected');
+
+  @override
+  Future checkStayConnected() {
+    return _$checkStayConnectedAsyncAction
+        .run(() => super.checkStayConnected());
+  }
+
   final _$saveUserAsyncAction = AsyncAction('saveUser');
 
   @override
   Future saveUser(UserDto user) {
     return _$saveUserAsyncAction.run(() => super.saveUser(user));
-  }
-
-  final _$_AuthStoreActionController = ActionController(name: '_AuthStore');
-
-  @override
-  Future<dynamic> login() {
-    final _$actionInfo = _$_AuthStoreActionController.startAction();
-    try {
-      return super.login();
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void stayConnected() {
-    final _$actionInfo = _$_AuthStoreActionController.startAction();
-    try {
-      return super.stayConnected();
-    } finally {
-      _$_AuthStoreActionController.endAction(_$actionInfo);
-    }
   }
 }

@@ -38,6 +38,15 @@ class _LoginPageState extends State<LoginPage> {
                 context, MaterialPageRoute(builder: (context) => HomePage())));
       }
     });
+
+    when(
+        (_) =>
+            _authStore.keepConnected !=null,
+        () {
+      if (_authStore.keepConnected.toString() ==  "true") {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    });
   }
 
   _showError(Map<String, dynamic> error) {
@@ -134,12 +143,17 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 15),
                       Row(
                         children: <Widget>[
-                          CircularCheckBox(
-                              value: true,
-                              activeColor: blue,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.padded,
-                              onChanged: (e) => e),
+                          Observer(
+                            builder: (_) {
+                              return CircularCheckBox(
+                                  value: _authStore.keepConnected ?? false,
+                                  activeColor: blue,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.padded,
+                                  onChanged: (e) =>
+                                      _authStore.keepConnected = e);
+                            },
+                          ),
                           Text(
                             'Me manter conectado',
                             style: TextStyle(color: primaryText, fontSize: 15),
