@@ -44,6 +44,23 @@ mixin _$UserStore on _UserStore, Store {
     }, _$currentUserRequestAtom, name: '${_$currentUserRequestAtom.name}_set');
   }
 
+  final _$logoutRequestAtom = Atom(name: '_UserStore.logoutRequest');
+
+  @override
+  ObservableFuture<dynamic> get logoutRequest {
+    _$logoutRequestAtom.context.enforceReadPolicy(_$logoutRequestAtom);
+    _$logoutRequestAtom.reportObserved();
+    return super.logoutRequest;
+  }
+
+  @override
+  set logoutRequest(ObservableFuture<dynamic> value) {
+    _$logoutRequestAtom.context.conditionallyRunInAction(() {
+      super.logoutRequest = value;
+      _$logoutRequestAtom.reportChanged();
+    }, _$logoutRequestAtom, name: '${_$logoutRequestAtom.name}_set');
+  }
+
   final _$userAtom = Atom(name: '_UserStore.user');
 
   @override
@@ -73,5 +90,12 @@ mixin _$UserStore on _UserStore, Store {
   @override
   Future<void> currentUser() {
     return _$currentUserAsyncAction.run(() => super.currentUser());
+  }
+
+  final _$logoutAsyncAction = AsyncAction('logout');
+
+  @override
+  Future<void> logout() {
+    return _$logoutAsyncAction.run(() => super.logout());
   }
 }

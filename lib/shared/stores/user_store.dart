@@ -22,6 +22,9 @@ abstract class _UserStore with Store {
 
   @observable
   ObservableFuture currentUserRequest = ObservableFuture.value(null);
+
+  @observable
+  ObservableFuture logoutRequest = ObservableFuture.value(null);
   
   @observable
   UserDto user;
@@ -34,5 +37,10 @@ abstract class _UserStore with Store {
   @action
   Future<void> currentUser() async {
     currentUserRequest = _userStorage.read(key: 'user').asObservable();
+  }
+
+  @action 
+  Future<void> logout() async{
+    logoutRequest = _userStorage.clear(key: 'user').asObservable();
   }
 }

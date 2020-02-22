@@ -3,7 +3,7 @@ class UserDto {
   String name;
   String email;
   String birthDate;
-  Null avatar;
+  String avatar;
 
   UserDto({this.id, this.name, this.email, this.birthDate, this.avatar});
 
