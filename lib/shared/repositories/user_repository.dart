@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:ctrl_money/shared/config.dart';
 import 'package:ctrl_money/shared/models/user_dto.dart';
 import 'package:dio/dio.dart';
 
-abstract class IUserRepository{
+abstract class IUserRepository {
   Future<UserDto> get(String id);
+  Future<UserDto> upload(UserDto user);
 }
 
 class UserRepository implements IUserRepository {
@@ -15,6 +18,15 @@ class UserRepository implements IUserRepository {
     try {
       final response = await _dio.get("$url/user/$id");
       return UserDto.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<UserDto> upload(UserDto user) async {
+    try {
+      final response = await _dio.put("$url/user", data: user.toJson());
+      return UserDto.fromJson(jsonDecode(response.data));
     } catch (e) {
       rethrow;
     }

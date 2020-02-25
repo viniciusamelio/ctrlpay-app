@@ -1,4 +1,5 @@
 import 'package:ctrl_money/home/views/home_page.dart';
+import 'package:ctrl_money/profile/views/profile_edit_page.dart';
 import 'package:ctrl_money/profile/views/profile_page.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/signup/views/signup_page.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
         '/home' : (context) => HomePage(),
         '/login' : (context) => LoginPage(),
         '/signup' : (context) => SignUpPage(),
-        '/profile' : (context) => ProfilePage()
+        '/profile' : (context) => ProfilePage(),
+        '/profile/edit' : (context) => ProfileEditPage()
       },
     );
   }

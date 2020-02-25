@@ -6,7 +6,6 @@ import 'package:ctrl_money/shared/services/auth_service.dart';
 import 'package:ctrl_money/shared/stores/user_store.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
-import 'package:ctrl_money/shared/utils/masks.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -43,13 +42,14 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTile(
               contentPadding: EdgeInsets.all(0),
               leading: Container(
+                width: 55,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                 ),
                 child: _user.data.avatar != null
                     ? ClipOval(
                         child: Image.memory(base64Decode(_user.data.avatar),
-                            fit: BoxFit.contain),
+                            fit: BoxFit.fill),
                       )
                     : CircleAvatar(
                         backgroundColor: lighter,
@@ -70,14 +70,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: <Widget>[
                   FlatButton.icon(
                     color: secondaryBlue,
-                    label: Text("Editar perfil",
+                    label: Text("Editar avatar",
                         style: TextStyle(color: primaryText)),
                     icon: Icon(
                       FontAwesomeIcons.solidEdit,
                       color: primaryText,
                       size: 20,
                     ),
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context).pushNamed('/profile/edit'),
                   ),
                   SizedBox(width: 10),
                   FlatButton.icon(

@@ -72,13 +72,14 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       backgroundColor: darker,
       appBar: AppBar(
-        elevation: 0.5,
-        backgroundColor: lighter,
-        title: Text("Crie sua conta"),
+        elevation: 0,
+        backgroundColor: darker,
         centerTitle: true,
+        title: Text("Crie sua conta"),
       ),
       body: SingleChildScrollView(
-        child: Column(
+        child: Container(
+          child: Column(
           children: <Widget>[
             Container(
               child: Icon(FontAwesomeIcons.chartLine,
@@ -177,14 +178,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     if (_signUpStore.request.status == FutureStatus.pending) {
                       return FadingText('Carregando...');
                     }
-                    return Text('Prosseguir');
+                    return Text('Prosseguir',style: TextStyle(fontSize: 16));
                   },
                 ),
               ),
             ),
           ],
         ),
-      ),
+     
+        ) ),
     );
   }
 }

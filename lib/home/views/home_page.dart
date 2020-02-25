@@ -10,7 +10,6 @@ import 'package:ctrl_money/shared/services/auth_service.dart';
 import 'package:ctrl_money/shared/stores/user_store.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -43,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       FutureStatus status = _userStore.logoutRequest.status;
       if (status == FutureStatus.fulfilled) {
         Navigator.of(context)
-            .pushNamedAndRemoveUntil('/login', ModalRoute.withName('/'));
+            .pushNamedAndRemoveUntil('/login', ModalRoute.withName('/login'));
       }
     });
 
