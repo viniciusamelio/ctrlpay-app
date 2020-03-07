@@ -1,9 +1,9 @@
 class SignUpResponse {
-  String id;
-  String idUser;
+  int id;
+  int idUser;
   String birthDate;
   String superuser;
-  Null avatar;
+  String avatar;
   String createdAt;
   String updatedAt;
 

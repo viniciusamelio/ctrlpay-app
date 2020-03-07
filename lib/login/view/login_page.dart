@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
     reaction((_) => _authStore.response.status, (_) async {
       if (_authStore.response.status == FutureStatus.rejected) {
-        _showError(_authStore.response.result);
+        _showError(_authStore.response.result['message']);
       } else if (_authStore.response.status == FutureStatus.fulfilled) {
         await _authStore.saveUser(_authStore.response.value).whenComplete(() =>
             Navigator.pushReplacement(
@@ -49,13 +49,12 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  _showError(Map<String, dynamic> error) {
-    String _message = error['message'];
+  _showError(String error) {
     AwesomeDialog(
             context: context,
             dialogType: DialogType.ERROR,
             body: Center(
-              child: Text(_message),
+              child: Text(error),
             ),
             tittle: "Opa!",
             btnOkColor: Colors.redAccent,

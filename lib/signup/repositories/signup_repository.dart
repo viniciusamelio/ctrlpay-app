@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:ctrl_money/shared/config.dart';
 import 'package:ctrl_money/signup/models/signup_dto.dart';
 import 'package:ctrl_money/signup/models/signup_response.dart';
@@ -13,7 +11,7 @@ class SignUpRepository {
   Future<SignUpResponse> add(SignUpDto dto) async {
     try {
       final response = await _dio.post("$url/user", data: dto.toJson());
-      return SignUpResponse.fromJson(jsonDecode(response.data));
+      return SignUpResponse.fromJson(response.data);
     } catch (e) {
       rethrow;
     }

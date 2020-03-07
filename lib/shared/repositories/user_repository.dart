@@ -25,8 +25,8 @@ class UserRepository implements IUserRepository {
 
   Future<UserDto> upload(UserDto user) async {
     try {
-      final response = await _dio.put("$url/user", data: user.toJson());
-      return UserDto.fromJson(jsonDecode(response.data));
+      final response = await _dio.patch("$url/user", data: user.toJson());
+      return UserDto.fromJson(response.data);
     } catch (e) {
       rethrow;
     }

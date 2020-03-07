@@ -1,9 +1,10 @@
 class UserDto {
-  String id;
+  int id;
   String name;
   String email;
   String birthDate;
   String avatar;
+  String message;
 
   UserDto({this.id, this.name, this.email, this.birthDate, this.avatar});
 
@@ -13,6 +14,7 @@ class UserDto {
     email = json['email'];
     birthDate = json['birth_date'];
     avatar = json['avatar'];
+    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
