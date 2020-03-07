@@ -2,7 +2,7 @@ class SignUpResponse {
   int id;
   int idUser;
   String birthDate;
-  String superuser;
+  int superuser;
   String avatar;
   String createdAt;
   String updatedAt;

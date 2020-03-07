@@ -36,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
         _authStore.loginDto.password = _signUpStore.dto.password;
         await _authStore.login();
       } else if (status == FutureStatus.rejected) {
-        _showError(_signUpStore.request.error.toString());
+        _showError(_signUpStore.request.result['message']);
       }
     });
 
