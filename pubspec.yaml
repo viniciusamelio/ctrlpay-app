@@ -35,7 +35,8 @@ dependencies:
   flutter_masked_text: ^0.8.0
   carousel_slider: ^1.4.1
   flushbar: ^1.9.1
-  image_picker: ^0.6.3+4
+  image_picker: ^0.6.3+4  
+  flutter_shimmer: ^1.2.0
   
 dev_dependencies:
   flutter_test:

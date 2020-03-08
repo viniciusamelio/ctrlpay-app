@@ -1,3 +1,4 @@
+import 'package:ctrl_money/account/views/accounts_page.dart';
 import 'package:ctrl_money/home/views/home_page.dart';
 import 'package:ctrl_money/profile/views/profile_edit_page.dart';
 import 'package:ctrl_money/profile/views/profile_page.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
         '/login' : (context) => LoginPage(),
         '/signup' : (context) => SignUpPage(),
         '/profile' : (context) => ProfilePage(),
-        '/profile/edit' : (context) => ProfileEditPage()
+        '/profile/edit' : (context) => ProfileEditPage(),
+        '/account' : (context) => AccountsPage()
       },
     );
   }

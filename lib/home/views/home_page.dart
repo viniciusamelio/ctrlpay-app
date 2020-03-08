@@ -430,6 +430,7 @@ class _HomePageState extends State<HomePage> {
                 icon: Icon(FontAwesomeIcons.exchangeAlt, color: primaryText),
                 title: 'Transações'),
             NavigationBlock(
+                action: () => Navigator.pushNamed(context, '/account') ,
                 icon: Icon(FontAwesomeIcons.wallet, color: primaryText),
                 title: 'Carteira'),
             NavigationBlock(
