@@ -424,9 +424,6 @@ class _HomePageState extends State<HomePage> {
           physics: BouncingScrollPhysics(),
           children: <Widget>[
             NavigationBlock(
-                icon: Icon(FontAwesomeIcons.home, color: primaryText),
-                title: 'Início'),
-            NavigationBlock(
                 icon: Icon(FontAwesomeIcons.exchangeAlt, color: primaryText),
                 title: 'Transações'),
             NavigationBlock(
