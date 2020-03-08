@@ -84,7 +84,7 @@ class _AccountsPageState extends State<AccountsPage> {
                           textColor: primaryText,
                           child: const Text('Adicione aqui',
                               style: TextStyle(fontSize: 16)),
-                          onPressed: () {},
+                          onPressed: () => Navigator.pushNamed(context, '/account/add'),
                         ),
                       )
                     ],

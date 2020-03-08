@@ -47,6 +47,43 @@ mixin _$BankAccountStore on _BankAccountStore, Store {
     }, _$listRequestAtom, name: '${_$listRequestAtom.name}_set');
   }
 
+  final _$addRequestAtom = Atom(name: '_BankAccountStore.addRequest');
+
+  @override
+  ObservableFuture<BankAccountDto> get addRequest {
+    _$addRequestAtom.context.enforceReadPolicy(_$addRequestAtom);
+    _$addRequestAtom.reportObserved();
+    return super.addRequest;
+  }
+
+  @override
+  set addRequest(ObservableFuture<BankAccountDto> value) {
+    _$addRequestAtom.context.conditionallyRunInAction(() {
+      super.addRequest = value;
+      _$addRequestAtom.reportChanged();
+    }, _$addRequestAtom, name: '${_$addRequestAtom.name}_set');
+  }
+
+  final _$selectedBankAccountCategoryAtom =
+      Atom(name: '_BankAccountStore.selectedBankAccountCategory');
+
+  @override
+  BankAccountCategoryDto get selectedBankAccountCategory {
+    _$selectedBankAccountCategoryAtom.context
+        .enforceReadPolicy(_$selectedBankAccountCategoryAtom);
+    _$selectedBankAccountCategoryAtom.reportObserved();
+    return super.selectedBankAccountCategory;
+  }
+
+  @override
+  set selectedBankAccountCategory(BankAccountCategoryDto value) {
+    _$selectedBankAccountCategoryAtom.context.conditionallyRunInAction(() {
+      super.selectedBankAccountCategory = value;
+      _$selectedBankAccountCategoryAtom.reportChanged();
+    }, _$selectedBankAccountCategoryAtom,
+        name: '${_$selectedBankAccountCategoryAtom.name}_set');
+  }
+
   final _$listCategoriesAsyncAction = AsyncAction('listCategories');
 
   @override
@@ -59,5 +96,12 @@ mixin _$BankAccountStore on _BankAccountStore, Store {
   @override
   Future<void> list(UserDto user) {
     return _$listAsyncAction.run(() => super.list(user));
+  }
+
+  final _$addAsyncAction = AsyncAction('add');
+
+  @override
+  Future<void> add() {
+    return _$addAsyncAction.run(() => super.add());
   }
 }

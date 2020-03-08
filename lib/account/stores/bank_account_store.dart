@@ -11,7 +11,7 @@ class BankAccountStore extends _BankAccountStore with _$BankAccountStore{
 
 abstract class _BankAccountStore with Store{
   final BankAccountRepository bankAccountRepository;
-
+  BankAccountDto bankAccountDto = BankAccountDto();
   _BankAccountStore(this.bankAccountRepository);
 
   @observable 
@@ -19,6 +19,12 @@ abstract class _BankAccountStore with Store{
 
   @observable
   ObservableFuture<List<BankAccountDto>> listRequest = ObservableFuture.value(null);
+
+  @observable
+  ObservableFuture<BankAccountDto> addRequest = ObservableFuture.value(null);
+
+  @observable
+  BankAccountCategoryDto selectedBankAccountCategory;
 
   @action 
   Future<void> listCategories() async{
@@ -28,5 +34,10 @@ abstract class _BankAccountStore with Store{
   @action 
   Future<void> list(UserDto user) async{
     listRequest = bankAccountRepository.list(user).asObservable();
+  }
+
+  @action
+  Future<void> add() async {
+    addRequest = bankAccountRepository.add(bankAccountDto).asObservable();
   }
 }

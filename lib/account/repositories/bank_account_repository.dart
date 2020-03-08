@@ -34,4 +34,13 @@ class BankAccountRepository {
       rethrow;
     }
   }
+
+  Future<BankAccountDto> add(BankAccountDto bankAccount) async {
+    try {
+      final response = await _dio.post('$url/account',data:bankAccount.toJson());
+      return BankAccountDto.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -2,10 +2,11 @@ class BankAccountDto {
   int id;
   int idUser;
   int idBankAccountCategory;
-  int totalAmount;
+  double totalAmount;
   String createdAt;
   String updatedAt;
   String description;
+  String message;
 
   BankAccountDto(
       {this.id,
@@ -20,17 +21,18 @@ class BankAccountDto {
     id = json['id'];
     idUser = json['id_user'];
     idBankAccountCategory = json['id_bank_account_category'];
-    totalAmount = json['total_amount'];
+    totalAmount = double.parse(json['total_amount'].toString());
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     description = json['description'];
+    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['id_user'] = this.idUser;
-    data['id_bank_account_category'] = this.idBankAccountCategory;
+    data['id_category'] = this.idBankAccountCategory;
     data['total_amount'] = this.totalAmount;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;

@@ -7,3 +7,6 @@ const secondaryText = Color.fromRGBO(81, 82, 89, 1);
 const primaryText = Color.fromRGBO(232, 236, 241, 1);
 const blue = Color.fromRGBO(63, 91, 216, 1);
 const secondaryBlue = Color.fromRGBO(63, 91, 216, 0.8);
+const green = Color.fromRGBO(69, 230, 67, 1);
+//126, 242, 24
+//69, 230, 67
