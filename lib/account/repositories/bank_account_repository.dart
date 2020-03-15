@@ -43,4 +43,13 @@ class BankAccountRepository {
       rethrow;
     }
   }
+
+  Future<BankAccountDto> get(int id) async{
+    try {
+      final response = await _dio.get('$url/account/$id');
+      return BankAccountDto.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -64,6 +64,45 @@ mixin _$BankAccountStore on _BankAccountStore, Store {
     }, _$addRequestAtom, name: '${_$addRequestAtom.name}_set');
   }
 
+  final _$getRequestAtom = Atom(name: '_BankAccountStore.getRequest');
+
+  @override
+  ObservableFuture<BankAccountDto> get getRequest {
+    _$getRequestAtom.context.enforceReadPolicy(_$getRequestAtom);
+    _$getRequestAtom.reportObserved();
+    return super.getRequest;
+  }
+
+  @override
+  set getRequest(ObservableFuture<BankAccountDto> value) {
+    _$getRequestAtom.context.conditionallyRunInAction(() {
+      super.getRequest = value;
+      _$getRequestAtom.reportChanged();
+    }, _$getRequestAtom, name: '${_$getRequestAtom.name}_set');
+  }
+
+  final _$currentTransactionAmountRequestAtom =
+      Atom(name: '_BankAccountStore.currentTransactionAmountRequest');
+
+  @override
+  ObservableFuture<List<CurrentTransactionDto>>
+      get currentTransactionAmountRequest {
+    _$currentTransactionAmountRequestAtom.context
+        .enforceReadPolicy(_$currentTransactionAmountRequestAtom);
+    _$currentTransactionAmountRequestAtom.reportObserved();
+    return super.currentTransactionAmountRequest;
+  }
+
+  @override
+  set currentTransactionAmountRequest(
+      ObservableFuture<List<CurrentTransactionDto>> value) {
+    _$currentTransactionAmountRequestAtom.context.conditionallyRunInAction(() {
+      super.currentTransactionAmountRequest = value;
+      _$currentTransactionAmountRequestAtom.reportChanged();
+    }, _$currentTransactionAmountRequestAtom,
+        name: '${_$currentTransactionAmountRequestAtom.name}_set');
+  }
+
   final _$selectedBankAccountCategoryAtom =
       Atom(name: '_BankAccountStore.selectedBankAccountCategory');
 
@@ -82,6 +121,40 @@ mixin _$BankAccountStore on _BankAccountStore, Store {
       _$selectedBankAccountCategoryAtom.reportChanged();
     }, _$selectedBankAccountCategoryAtom,
         name: '${_$selectedBankAccountCategoryAtom.name}_set');
+  }
+
+  final _$earningAtom = Atom(name: '_BankAccountStore.earning');
+
+  @override
+  double get earning {
+    _$earningAtom.context.enforceReadPolicy(_$earningAtom);
+    _$earningAtom.reportObserved();
+    return super.earning;
+  }
+
+  @override
+  set earning(double value) {
+    _$earningAtom.context.conditionallyRunInAction(() {
+      super.earning = value;
+      _$earningAtom.reportChanged();
+    }, _$earningAtom, name: '${_$earningAtom.name}_set');
+  }
+
+  final _$expenseAtom = Atom(name: '_BankAccountStore.expense');
+
+  @override
+  double get expense {
+    _$expenseAtom.context.enforceReadPolicy(_$expenseAtom);
+    _$expenseAtom.reportObserved();
+    return super.expense;
+  }
+
+  @override
+  set expense(double value) {
+    _$expenseAtom.context.conditionallyRunInAction(() {
+      super.expense = value;
+      _$expenseAtom.reportChanged();
+    }, _$expenseAtom, name: '${_$expenseAtom.name}_set');
   }
 
   final _$listCategoriesAsyncAction = AsyncAction('listCategories');
@@ -103,5 +176,21 @@ mixin _$BankAccountStore on _BankAccountStore, Store {
   @override
   Future<void> add() {
     return _$addAsyncAction.run(() => super.add());
+  }
+
+  final _$getAsyncAction = AsyncAction('get');
+
+  @override
+  Future<void> get(int id) {
+    return _$getAsyncAction.run(() => super.get(id));
+  }
+
+  final _$getCurrentTransactionAmountAsyncAction =
+      AsyncAction('getCurrentTransactionAmount');
+
+  @override
+  Future<void> getCurrentTransactionAmount(int idBankAccount) {
+    return _$getCurrentTransactionAmountAsyncAction
+        .run(() => super.getCurrentTransactionAmount(idBankAccount));
   }
 }

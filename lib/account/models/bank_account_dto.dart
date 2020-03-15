@@ -7,6 +7,7 @@ class BankAccountDto {
   String updatedAt;
   String description;
   String message;
+  String accountDescription;
 
   BankAccountDto(
       {this.id,
@@ -26,6 +27,7 @@ class BankAccountDto {
     updatedAt = json['updated_at'];
     description = json['description'];
     message = json['message'];
+    accountDescription = json['account_description'];
   }
 
   Map<String, dynamic> toJson() {

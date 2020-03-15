@@ -32,7 +32,7 @@ class _AccountsPageState extends State<AccountsPage> {
       appBar: AppBar(
         backgroundColor: darker,
         elevation: 0,
-        title: Text("Contas bancárias",
+        title: Text("Carteira",
             style: TextStyle(color: primaryText, fontSize: 18)),
         actions: <Widget>[
           IconButton(
@@ -60,7 +60,7 @@ class _AccountsPageState extends State<AccountsPage> {
                         size: 80,
                         color: Colors.orange[300],
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       Container(
                         child: const Text(
                           'Você ainda não adicionou nenhuma conta bancária',
@@ -109,6 +109,7 @@ class _AccountsPageState extends State<AccountsPage> {
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
+                          onTap: ()=>Navigator.pushNamed(context, '/account/details',arguments: _bankAccountStore.listRequest.value[index].id),
                           leading: Container(
                             height: 40,
                             width: 40,
