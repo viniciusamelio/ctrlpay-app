@@ -202,7 +202,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
               isDarkMode: false,
               isDisabledButton: true,
               hasCustomColors: true,
-              colors: [secondaryBlue, secondaryText, blue],
+              colors: [secondaryBlue, darker, blue],
             ),
             ListTileShimmer(
               isDisabledAvatar: true,
@@ -210,7 +210,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
               isDarkMode: false,
               isDisabledButton: true,
               hasCustomColors: true,
-              colors: [secondaryBlue, secondaryText, blue],
+              colors: [secondaryBlue, darker, blue],
             ),
             ListTileShimmer(
               isDisabledAvatar: true,
@@ -218,7 +218,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
               isDarkMode: false,
               isDisabledButton: true,
               hasCustomColors: true,
-              colors: [secondaryBlue, secondaryText, blue],
+              colors: [secondaryBlue, darker, blue],
             )
           ],
         );

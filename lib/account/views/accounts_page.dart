@@ -84,7 +84,8 @@ class _AccountsPageState extends State<AccountsPage> {
                           textColor: primaryText,
                           child: const Text('Adicione aqui',
                               style: TextStyle(fontSize: 16)),
-                          onPressed: () => Navigator.pushNamed(context, '/account/add'),
+                          onPressed: () =>
+                              Navigator.pushNamed(context, '/account/add'),
                         ),
                       )
                     ],
@@ -92,18 +93,43 @@ class _AccountsPageState extends State<AccountsPage> {
                 ),
               );
             }
-            return ListView.builder(
-                itemCount: _bankAccountStore.listRequest.value.length,
-                primary: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(
-                        '${_bankAccountStore.listRequest.value[index].description}l',
-                        maxLines: 1),
-                    subtitle: Text(
-                        'R\$ ${_bankAccountStore.listRequest.value[index].totalAmount}'),
-                  );
-                });
+            return Scaffold(
+              backgroundColor: darker,
+              floatingActionButton: FlatButton.icon(
+                textColor: darker,
+                color: green,
+                  onPressed: ()=>Navigator.pushNamed(context, '/account/add'),
+                  icon: Icon(Icons.add),
+                  label: Text('Adicionar',style: TextStyle(fontWeight: FontWeight.w700))),
+              body: Column(
+                children: <Widget>[
+                  ListView.builder(
+                      itemCount: _bankAccountStore.listRequest.value.length,
+                      primary: true,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          leading: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                                color: blue, shape: BoxShape.circle),
+                            child: Center(
+                              child: Icon(FontAwesomeIcons.wallet),
+                            ),
+                          ),
+                          title: Text(
+                              '${_bankAccountStore.listRequest.value[index].description}',
+                              style: TextStyle(color: primaryText),
+                              maxLines: 1),
+                          subtitle: Text(
+                              'R\$ ${_bankAccountStore.listRequest.value[index].totalAmount}',
+                              style: TextStyle(color: blue)),
+                        );
+                      })
+                ],
+              ),
+            );
           }
           return ListView(
             children: <Widget>[
@@ -112,35 +138,35 @@ class _AccountsPageState extends State<AccountsPage> {
                 isDarkMode: false,
                 isDisabledButton: true,
                 hasCustomColors: true,
-                colors: [secondaryBlue, secondaryText, blue],
+                colors: [secondaryBlue, lighter, blue],
               ),
               ListTileShimmer(
                 hasBottomBox: true,
                 isDarkMode: false,
                 isDisabledButton: true,
                 hasCustomColors: true,
-                colors: [secondaryBlue, secondaryText, blue],
+                colors: [secondaryBlue, lighter, blue],
               ),
               ListTileShimmer(
                 hasBottomBox: true,
                 isDarkMode: false,
                 isDisabledButton: true,
                 hasCustomColors: true,
-                colors: [secondaryBlue, secondaryText, blue],
+                colors: [secondaryBlue, lighter, blue],
               ),
               ListTileShimmer(
                 hasBottomBox: true,
                 isDarkMode: false,
                 isDisabledButton: true,
                 hasCustomColors: true,
-                colors: [secondaryBlue, secondaryText, blue],
+                colors: [secondaryBlue, lighter, blue],
               ),
               ListTileShimmer(
                 hasBottomBox: true,
                 isDarkMode: false,
                 isDisabledButton: true,
                 hasCustomColors: true,
-                colors: [secondaryBlue, secondaryText, blue],
+                colors: [secondaryBlue, lighter, blue],
               )
             ],
           );
