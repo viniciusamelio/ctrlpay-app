@@ -6,6 +6,8 @@ import 'package:ctrl_money/profile/views/profile_edit_page.dart';
 import 'package:ctrl_money/profile/views/profile_page.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/signup/views/signup_page.dart';
+import 'package:ctrl_money/transactions/views/transaction_add_page.dart';
+import 'package:ctrl_money/transactions/views/transaction_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -46,7 +48,9 @@ class MyApp extends StatelessWidget {
         '/profile/edit' : (context) => ProfileEditPage(),
         '/account' : (context) => AccountsPage(),
         '/account/add': (context) => AddAccountPage(),
-        '/account/details' : (context) => AccountDetailsPage()
+        '/account/details' : (context) => AccountDetailsPage(),
+        '/transaction/add' : (context) => TransactionAddPage(),
+        'transaction' : (context) => TransactionListPage()
       },
     );
   }

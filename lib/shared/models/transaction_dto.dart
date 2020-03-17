@@ -4,9 +4,9 @@ class TransactionDto {
   String status;
   String category;
   int idBankAccount;
-  int amount;
+  double amount;
   String createdAt;
-  Null updatedAt;
+  String updatedAt;
 
   TransactionDto(
       {this.id,
@@ -24,7 +24,7 @@ class TransactionDto {
     status = json['status'];
     category = json['category'];
     idBankAccount = json['id_bank_account'];
-    amount = json['amount'];
+    amount = double.parse(json['amount'].toString());
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }

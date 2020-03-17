@@ -19,7 +19,7 @@ class AccountDetailsPage extends StatefulWidget {
 class _AccountDetailsPageState extends State<AccountDetailsPage> {
   BankAccountStore _bankAccountStore;
   bool _loaded = false;
-  FlutterMoneyFormatter _amountFormatter, _earningFomatter, _expenseFormatter;
+  FlutterMoneyFormatter _amountFormatter, _earningFomatter, _expenseFormatter, _transactionAmountFormatter;
   DateTime _date = DateTime.now();
 
   @override
@@ -125,7 +125,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600)),
                             Icon(
-                              FontAwesomeIcons.arrowDown,
+                              FontAwesomeIcons.arrowUp,
                               color: Colors.green,
                               size: 35,
                             ),
@@ -206,8 +206,36 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                           FutureStatus.fulfilled) {
                         if (_bankAccountStore
                                 .bankAccountTransactionsRequest.value.length >
-                            0) {
-                          return Container();
+                            0) {                              
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: _bankAccountStore
+                                  .bankAccountTransactionsRequest.value.length,
+                              itemBuilder: (context, index) {
+                                final item  = _bankAccountStore
+                                  .bankAccountTransactionsRequest.value[index];
+                                _transactionAmountFormatter = FlutterMoneyFormatter(
+                                  amount: item.amount,
+                                  settings:  MoneyFormatterSettings(
+                                        thousandSeparator: '.',
+                                        decimalSeparator: ',')
+                                );
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: item.idTransactionType == 2 ? Colors.lightGreen : Colors.redAccent,
+                                    borderRadius: BorderRadius.circular(4)
+                                  ),
+                                  child: ListTile(
+                                  leading: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[item.status == 'ok' ? Icon(Icons.check) : Icon(Icons.close)],
+                                  ),
+                                  title: Text(item.category),
+                                  subtitle: Text(item.idTransactionType == 1 ? 'Despesa' : 'Receita'),
+                                  trailing: Text(_transactionAmountFormatter.output.nonSymbol),
+                                ),
+                                );
+                              });
                         }
                         return Center(
                           child: Column(
@@ -217,8 +245,9 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                               Icon(FontAwesomeIcons.solidFolderOpen,
                                   color: blue, size: 80),
                               const SizedBox(height: 10),
-                              const Text('Você ainda não possui transações nessa conta.',
-                              textAlign: TextAlign.center,
+                              const Text(
+                                  'Você ainda não possui transações nessa conta.',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: secondaryText,
                                       fontWeight: FontWeight.w700,
@@ -226,8 +255,11 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                               const SizedBox(height: 10),
                               FlatButton(
                                 color: green,
-                                child: Text('Comece a adicionar aqui!',style: TextStyle(fontWeight: FontWeight.w600,color: darker)),
-                                onPressed: (){},
+                                child: Text('Comece a adicionar aqui!',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: darker)),
+                                onPressed: () {},
                               )
                             ],
                           ),
