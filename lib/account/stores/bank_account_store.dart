@@ -2,6 +2,7 @@ import 'package:ctrl_money/account/models/bank_account_category_dto.dart';
 import 'package:ctrl_money/account/models/bank_account_dto.dart';
 import 'package:ctrl_money/account/repositories/bank_account_repository.dart';
 import 'package:ctrl_money/shared/models/current_transaction_dto.dart';
+import 'package:ctrl_money/shared/models/transaction_dto.dart';
 import 'package:ctrl_money/shared/models/user_dto.dart';
 import 'package:ctrl_money/shared/repositories/transaction_repository.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
@@ -30,6 +31,8 @@ abstract class _BankAccountStore with Store{
   ObservableFuture<BankAccountDto> getRequest = ObservableFuture.value(null);
   @observable 
   ObservableFuture<List<CurrentTransactionDto>> currentTransactionAmountRequest = ObservableFuture.value(null);
+  @observable 
+  ObservableFuture<List<TransactionDto>> bankAccountTransactionsRequest = ObservableFuture.value(null);
   @observable
   BankAccountCategoryDto selectedBankAccountCategory;
   @observable
@@ -60,5 +63,10 @@ abstract class _BankAccountStore with Store{
   @action 
   Future<void> getCurrentTransactionAmount(int idBankAccount) async{
     currentTransactionAmountRequest = transactionRepository.getCurrentTransactionsAmount(idBankAccount).asObservable();
+  }
+
+  @action 
+  Future<void> getBankAccountTransactions(int id) async {
+    bankAccountTransactionsRequest = bankAccountRepository.listTransactions(id).asObservable();
   }
 }

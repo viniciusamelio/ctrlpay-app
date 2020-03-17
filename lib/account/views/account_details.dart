@@ -54,6 +54,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
       final id = ModalRoute.of(context).settings.arguments as int;
       _bankAccountStore.get(id);
       _bankAccountStore.getCurrentTransactionAmount(id);
+      _bankAccountStore.getBankAccountTransactions(id);
       _loaded = true;
     }
     super.didChangeDependencies();
@@ -197,7 +198,44 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                       style: TextStyle(
                           color: primaryText,
                           fontWeight: FontWeight.w600,
-                          fontSize: 20))
+                          fontSize: 20)),
+                  Observer(
+                    builder: (_) {
+                      if (_bankAccountStore
+                              .bankAccountTransactionsRequest.status ==
+                          FutureStatus.fulfilled) {
+                        if (_bankAccountStore
+                                .bankAccountTransactionsRequest.value.length >
+                            0) {
+                          return Container();
+                        }
+                        return Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const SizedBox(height: 10),
+                              Icon(FontAwesomeIcons.solidFolderOpen,
+                                  color: blue, size: 80),
+                              const SizedBox(height: 10),
+                              const Text('Você ainda não possui transações nessa conta.',
+                              textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: secondaryText,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 17)),
+                              const SizedBox(height: 10),
+                              FlatButton(
+                                color: green,
+                                child: Text('Comece a adicionar aqui!',style: TextStyle(fontWeight: FontWeight.w600,color: darker)),
+                                onPressed: (){},
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  )
                 ],
               ),
             );

@@ -1,6 +1,7 @@
 import 'package:ctrl_money/account/models/bank_account_category_dto.dart';
 import 'package:ctrl_money/account/models/bank_account_dto.dart';
 import 'package:ctrl_money/shared/config.dart';
+import 'package:ctrl_money/shared/models/transaction_dto.dart';
 import 'package:ctrl_money/shared/models/user_dto.dart';
 import 'package:dio/dio.dart';
 
@@ -48,6 +49,19 @@ class BankAccountRepository {
     try {
       final response = await _dio.get('$url/account/$id');
       return BankAccountDto.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<TransactionDto>> listTransactions(int id) async{
+    try {
+      final List<TransactionDto> _response = [];
+      final response = await _dio.get('$url/account/transactions/$id');
+      for (var item in response.data) {
+          _response.add(TransactionDto.fromJson(item));
+      }
+      return _response;
     } catch (e) {
       rethrow;
     }

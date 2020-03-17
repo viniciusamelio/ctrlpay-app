@@ -43,8 +43,10 @@ class _AddAccountPageState extends State<AddAccountPage> {
             ),
             tittle: "Sucesso!",
             btnOkColor: Colors.green,
-            btnOkOnPress: () =>
-                Navigator.popAndPushNamed(context, '/account')).show();
+            btnOkOnPress: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            }).show();
       } else if (status == FutureStatus.rejected) {
         _showError(_bankAccountStore.addRequest.value.message);
       }
@@ -101,7 +103,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
             );
           } else {
             return FlatButton(
-              onPressed: (){},
+              onPressed: () {},
               child: FadingText('Carregando...'),
             );
           }
@@ -141,11 +143,13 @@ class _AddAccountPageState extends State<AddAccountPage> {
                           e = e.replaceAll('.', '').replaceAll(',', '.');
                           if (e.isEmpty ||
                               double.tryParse(e) == null ||
-                              double.tryParse(e) <= 0)
+                              double.tryParse(e) < 0)
                             return "Insira um valor válido";
                         },
                         onSaved: (e) =>
-                            _bankAccountStore.bankAccountDto.totalAmount = double.parse(e.replaceAll('.', '').replaceAll(',', '.')),
+                            _bankAccountStore.bankAccountDto.totalAmount =
+                                double.parse(
+                                    e.replaceAll('.', '').replaceAll(',', '.')),
                         decoration: InputDecoration(
                             prefix: Text('R\$ ',
                                 style: TextStyle(color: secondaryText)),
