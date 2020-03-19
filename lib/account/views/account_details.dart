@@ -52,6 +52,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
   void didChangeDependencies() {
     if (!_loaded) {
       final id = ModalRoute.of(context).settings.arguments as int;
+      _bankAccountStore.bankAccountDto.id = id;
       _bankAccountStore.get(id);
       _bankAccountStore.getCurrentTransactionAmount(id);
       _bankAccountStore.getBankAccountTransactions(id);
@@ -88,7 +89,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
       backgroundColor: darker,
       body: Observer(builder: (_) {
         if (_bankAccountStore.getRequest.status != FutureStatus.pending) {
-          if (_bankAccountStore.getRequest.value != null) {
+          if (_bankAccountStore.getRequest.value != null) {          
             _amountFormatter = FlutterMoneyFormatter(
                 amount: _bankAccountStore.getRequest.value.totalAmount,
                 settings: MoneyFormatterSettings(
@@ -193,12 +194,19 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
+                  FlatButton(
+                    color: green,
+                    onPressed: ()=>Navigator.pushNamed(context, '/transaction/add', arguments: _bankAccountStore.bankAccountDto.id),
+                    child: Text("Adicionar",style: TextStyle(color: darker,fontWeight: FontWeight.w600)),
+                  ),
+                  const SizedBox(height: 10),
                   const Text('Últimas transações',
                       style: TextStyle(
                           color: primaryText,
                           fontWeight: FontWeight.w600,
                           fontSize: 20)),
+                const SizedBox(height: 5),
                   Observer(
                     builder: (_) {
                       if (_bankAccountStore
@@ -221,6 +229,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                         decimalSeparator: ',')
                                 );
                                 return Container(
+                                  margin: EdgeInsets.all(2),
                                   decoration: BoxDecoration(
                                     color: item.idTransactionType == 2 ? Colors.lightGreen : Colors.redAccent,
                                     borderRadius: BorderRadius.circular(4)
@@ -228,10 +237,13 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                   child: ListTile(
                                   leading: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[item.status == 'ok' ? Icon(Icons.check) : Icon(Icons.close)],
+                                    children: <Widget>[
+                                      item.status.toUpperCase() == 'OK' ? Icon(Icons.check,size: 35) : Icon(Icons.close,size: 35),
+                                      Text(item.status, style: TextStyle(color: darker, fontSize: 14, fontWeight: FontWeight.w600)),
+                                      ],
                                   ),
-                                  title: Text(item.category),
-                                  subtitle: Text(item.idTransactionType == 1 ? 'Despesa' : 'Receita'),
+                                  title: Text('${item.category}', style: TextStyle(color: darker, fontWeight: FontWeight.w800),),
+                                  subtitle: Text(item.idTransactionType == 1 ? 'Despesa' : 'Receita', style: TextStyle(fontWeight: FontWeight.w600)),
                                   trailing: Text(_transactionAmountFormatter.output.nonSymbol),
                                 ),
                                 );
@@ -259,7 +271,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: darker)),
-                                onPressed: () {},
+                                onPressed: () => Navigator.pushReplacementNamed(context, '/transaction/add', arguments: _bankAccountStore.bankAccountDto.id),
                               )
                             ],
                           ),

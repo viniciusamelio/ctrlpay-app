@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         '/account/add': (context) => AddAccountPage(),
         '/account/details' : (context) => AccountDetailsPage(),
         '/transaction/add' : (context) => TransactionAddPage(),
-        'transaction' : (context) => TransactionListPage()
+        '/transaction' : (context) => TransactionListPage()
       },
     );
   }

@@ -6,6 +6,6 @@ class CurrentTransactionDto {
 
   CurrentTransactionDto.fromMap(Map<String, dynamic> json) {
     description = json['description'];
-    totalAmount = json['total_amount'];
+    totalAmount = double.parse(json['total_amount'].toString());
   }
 }
