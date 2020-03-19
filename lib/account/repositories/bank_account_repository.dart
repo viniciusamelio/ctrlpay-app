@@ -26,7 +26,8 @@ class BankAccountRepository {
   Future<List<BankAccountDto>> list(UserDto user) async {
     try {
       List<BankAccountDto> _return = [];
-      final response = await _dio.post('$url/account/list',data: {"id_user" : user.id});
+      final response =
+          await _dio.post('$url/account/list', data: {"id_user": user.id});
       for (var account in response.data as List) {
         _return.add(BankAccountDto.fromJson(account));
       }
@@ -38,14 +39,15 @@ class BankAccountRepository {
 
   Future<BankAccountDto> add(BankAccountDto bankAccount) async {
     try {
-      final response = await _dio.post('$url/account',data:bankAccount.toJson());
+      final response =
+          await _dio.post('$url/account', data: bankAccount.toJson());
       return BankAccountDto.fromJson(response.data);
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<BankAccountDto> get(int id) async{
+  Future<BankAccountDto> get(int id) async {
     try {
       final response = await _dio.get('$url/account/$id');
       return BankAccountDto.fromJson(response.data);
@@ -54,14 +56,26 @@ class BankAccountRepository {
     }
   }
 
-  Future<List<TransactionDto>> listTransactions(int id) async{
+  Future<List<TransactionDto>> listTransactions(int id) async {
     try {
       final List<TransactionDto> _response = [];
       final response = await _dio.get('$url/account/transactions/$id');
       for (var item in response.data) {
-          _response.add(TransactionDto.fromJson(item));
+        _response.add(TransactionDto.fromJson(item));
       }
       return _response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<BankAccountDto> update(BankAccountDto dto) async {
+    try {
+      final response = await _dio.put('$url/account/${dto.id}', data: {
+        "id_category": dto.idBankAccountCategory,
+        "total_amount": dto.totalAmount
+      });
+      return BankAccountDto.fromJson(response.data);
     } catch (e) {
       rethrow;
     }

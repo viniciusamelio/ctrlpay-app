@@ -1,3 +1,6 @@
+import 'package:ctrl_money/account/models/bank_account_dto.dart';
+import 'package:ctrl_money/account/repositories/bank_account_repository.dart';
+import 'package:ctrl_money/account/stores/bank_account_store.dart';
 import 'package:ctrl_money/shared/components/select.dart';
 import 'package:ctrl_money/shared/models/transaction_dto.dart';
 import 'package:ctrl_money/shared/repositories/transaction_repository.dart';
@@ -19,6 +22,8 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   GlobalKey<FormState> _transactionKey;
   MoneyMaskedTextController _amountController;
   TransactionStore _transactionStore;
+  BankAccountStore _bankAccountStore;
+  BankAccountDto _bankAccountDto;
   int _type = 1;
   int idBankAccount;
 
@@ -27,10 +32,18 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     _amountController = MoneyMaskedTextController();
     _transactionKey = GlobalKey<FormState>();
     _transactionStore = TransactionStore(TransactionRepository(CustomDio()));
+    _bankAccountStore = BankAccountStore(BankAccountRepository(CustomDio()));
     reaction((_) => _transactionStore.addRequest.status, (_) {
       FutureStatus status = _transactionStore.addRequest.status;
-      print(status);
       if (status == FutureStatus.fulfilled) {
+        TransactionDto _value = _transactionStore.addRequest.value;
+        if (_value.idTransactionType == 1) {
+          _bankAccountDto.totalAmount -= _value.amount;
+        } else {
+          _bankAccountDto.totalAmount += _value.amount;
+        }
+        _bankAccountStore.bankAccountDto = _bankAccountDto;
+        _bankAccountStore.update();
         _transactionStore.dto = TransactionDto();
         _transactionStore.selectedStatus = null;
         _transactionStore.selectedCategory = null;
@@ -41,7 +54,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
           message: "Transação adicionada",
           mainButton: FlatButton(
             onPressed: () => Navigator.popUntil(
-                context, (route) => route.settings.name == '/account'),
+                context, (route) => route.settings.name == '/account',),
             child: Text("Sair",
                 style:
                     TextStyle(color: primaryText, fontWeight: FontWeight.w600)),
@@ -49,12 +62,23 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
         )..show(context);
       }
     });
+
+    when(
+        (_) =>
+            _bankAccountStore.getRequest.status == FutureStatus.fulfilled &&
+            _bankAccountStore.getRequest.value != null, () {
+      _bankAccountDto = _bankAccountStore.getRequest.value;
+    });
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    idBankAccount = ModalRoute.of(context).settings.arguments as int;
+    final arguments =
+        ModalRoute.of(context).settings.arguments as BankAccountDto;
+    idBankAccount = arguments.id;
+    _bankAccountStore.get(idBankAccount);
+    _bankAccountDto = BankAccountDto();
     super.didChangeDependencies();
   }
 
@@ -128,8 +152,12 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                     controller: _amountController,
                     validator: (e) {
                       if (e.isEmpty ||
-                          double.tryParse(e.replaceAll('.', '').replaceAll(',', '.')) == null ||
-                          double.parse(e.replaceAll('.', '').replaceAll(',', '.')) <= 0) {
+                          double.tryParse(
+                                  e.replaceAll('.', '').replaceAll(',', '.')) ==
+                              null ||
+                          double.parse(
+                                  e.replaceAll('.', '').replaceAll(',', '.')) <=
+                              0) {
                         return "Digite um valor válido";
                       }
                       return null;

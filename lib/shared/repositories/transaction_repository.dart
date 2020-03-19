@@ -13,13 +13,14 @@ class TransactionRepository{
   TransactionRepository(this._dio);
 
   Future<List<CurrentTransactionDto>> getCurrentTransactionsAmount(int idBankAccount) async {
-    List _response = [];
+    List<CurrentTransactionDto> list = [];
     try {
       final response = await _dio.get('$url/transaction/current/transaction/$idBankAccount');
-      for (var item in response.data) {
-          _response.add(CurrentTransactionDto.fromMap(item));
-      }
-      return _response;
+      final data =response.data as List;
+      for (var item in data) {
+        list.add(CurrentTransactionDto.fromMap(item));
+      } 
+      return list;
     } catch (e) {
       rethrow;
     }
@@ -28,7 +29,7 @@ class TransactionRepository{
   Future<List<TransactionDto>> list(int idBankAccount) async {
     List<TransactionDto> _response = [];
     try {
-      final response = await _dio.get('$url/transaction/$idBankAccount');
+      final response = await _dio.get('$url/transaction/$idBankAccount/5');
       for (var item in response.data) {
           _response.add(TransactionDto.fromJson(response.data));
       }

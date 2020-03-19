@@ -9,6 +9,23 @@ part of 'bank_account_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$BankAccountStore on _BankAccountStore, Store {
+  final _$updateRequestAtom = Atom(name: '_BankAccountStore.updateRequest');
+
+  @override
+  ObservableFuture<BankAccountDto> get updateRequest {
+    _$updateRequestAtom.context.enforceReadPolicy(_$updateRequestAtom);
+    _$updateRequestAtom.reportObserved();
+    return super.updateRequest;
+  }
+
+  @override
+  set updateRequest(ObservableFuture<BankAccountDto> value) {
+    _$updateRequestAtom.context.conditionallyRunInAction(() {
+      super.updateRequest = value;
+      _$updateRequestAtom.reportChanged();
+    }, _$updateRequestAtom, name: '${_$updateRequestAtom.name}_set');
+  }
+
   final _$categoryListRequestAtom =
       Atom(name: '_BankAccountStore.categoryListRequest');
 
@@ -204,6 +221,13 @@ mixin _$BankAccountStore on _BankAccountStore, Store {
   @override
   Future<void> get(int id) {
     return _$getAsyncAction.run(() => super.get(id));
+  }
+
+  final _$updateAsyncAction = AsyncAction('update');
+
+  @override
+  Future<void> update() {
+    return _$updateAsyncAction.run(() => super.update());
   }
 
   final _$getCurrentTransactionAmountAsyncAction =

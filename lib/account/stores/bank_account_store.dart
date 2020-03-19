@@ -21,6 +21,8 @@ abstract class _BankAccountStore with Store{
     transactionRepository = TransactionRepository(CustomDio());
   }
 
+  @observable
+  ObservableFuture<BankAccountDto> updateRequest = ObservableFuture.value(null);
   @observable 
   ObservableFuture<List<BankAccountCategoryDto>> categoryListRequest = ObservableFuture.value(null);
   @observable
@@ -60,6 +62,10 @@ abstract class _BankAccountStore with Store{
     getRequest = bankAccountRepository.get(id).asObservable();
   }
 
+  @action 
+  Future<void> update() async{
+    updateRequest = bankAccountRepository.update(bankAccountDto).asObservable();
+  }
   @action 
   Future<void> getCurrentTransactionAmount(int idBankAccount) async{
     currentTransactionAmountRequest = transactionRepository.getCurrentTransactionsAmount(idBankAccount).asObservable();

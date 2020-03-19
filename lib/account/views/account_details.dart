@@ -19,7 +19,10 @@ class AccountDetailsPage extends StatefulWidget {
 class _AccountDetailsPageState extends State<AccountDetailsPage> {
   BankAccountStore _bankAccountStore;
   bool _loaded = false;
-  FlutterMoneyFormatter _amountFormatter, _earningFomatter, _expenseFormatter, _transactionAmountFormatter;
+  FlutterMoneyFormatter _amountFormatter,
+      _earningFomatter,
+      _expenseFormatter,
+      _transactionAmountFormatter;
   DateTime _date = DateTime.now();
 
   @override
@@ -30,8 +33,14 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
 
     when(
         (_) =>
-            _bankAccountStore.currentTransactionAmountRequest.status ==
-            FutureStatus.fulfilled, () {
+            _bankAccountStore.getRequest.status == FutureStatus.fulfilled &&
+            _bankAccountStore.getRequest.value != null, () {
+      _bankAccountStore
+          .getCurrentTransactionAmount(_bankAccountStore.getRequest.value.id);
+    });
+
+    reaction((_) => _bankAccountStore.currentTransactionAmountRequest.status,
+        (_) {
       if (_bankAccountStore.currentTransactionAmountRequest.value != null) {
         _bankAccountStore.earning = _bankAccountStore
             .currentTransactionAmountRequest.value
@@ -54,7 +63,6 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
       final id = ModalRoute.of(context).settings.arguments as int;
       _bankAccountStore.bankAccountDto.id = id;
       _bankAccountStore.get(id);
-      _bankAccountStore.getCurrentTransactionAmount(id);
       _bankAccountStore.getBankAccountTransactions(id);
       _loaded = true;
     }
@@ -89,7 +97,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
       backgroundColor: darker,
       body: Observer(builder: (_) {
         if (_bankAccountStore.getRequest.status != FutureStatus.pending) {
-          if (_bankAccountStore.getRequest.value != null) {          
+          if (_bankAccountStore.getRequest.value != null) {
             _amountFormatter = FlutterMoneyFormatter(
                 amount: _bankAccountStore.getRequest.value.totalAmount,
                 settings: MoneyFormatterSettings(
@@ -112,41 +120,52 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                         decoration: BoxDecoration(
                             color: lighter,
                             borderRadius: BorderRadius.circular(2)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('Receitas',
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600)),
-                            Text('${_date.month}/${_date.year}',
-                                style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600)),
-                            Icon(
-                              FontAwesomeIcons.arrowUp,
-                              color: Colors.green,
-                              size: 35,
-                            ),
-                            Observer(
-                              builder: (_) {
-                                _earningFomatter = FlutterMoneyFormatter(
-                                    amount: _bankAccountStore.earning,
-                                    settings: MoneyFormatterSettings(
-                                        thousandSeparator: '.',
-                                        decimalSeparator: ','));
-                                return Text(
-                                    '${_earningFomatter.output.nonSymbol}',
+                        child: Observer(builder: (_) {
+                          if (_bankAccountStore
+                                  .currentTransactionAmountRequest.status !=
+                              FutureStatus.pending) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text('Receitas',
                                     style: TextStyle(
                                         color: Colors.green,
                                         fontSize: 16,
-                                        fontWeight: FontWeight.w600));
-                              },
-                            )
-                          ],
-                        ),
+                                        fontWeight: FontWeight.w600)),
+                                Text('${_date.month}/${_date.year}',
+                                    style: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                                Icon(
+                                  FontAwesomeIcons.arrowUp,
+                                  color: Colors.green,
+                                  size: 35,
+                                ),
+                                Observer(
+                                  builder: (_) {
+                                    _earningFomatter = FlutterMoneyFormatter(
+                                        amount: _bankAccountStore.earning,
+                                        settings: MoneyFormatterSettings(
+                                            thousandSeparator: '.',
+                                            decimalSeparator: ','));
+                                    return Text(
+                                        '${_earningFomatter.output.nonSymbol}',
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600));
+                                  },
+                                )
+                              ],
+                            );
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        }),
                       ),
                       SizedBox(width: 20),
                       Container(
@@ -156,57 +175,82 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                         decoration: BoxDecoration(
                             color: lighter,
                             borderRadius: BorderRadius.circular(2)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('Despesas',
-                                style: TextStyle(
-                                    color: Colors.redAccent,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600)),
-                            Text('${_date.month}/${_date.year}',
-                                style: TextStyle(
-                                    color: Colors.redAccent,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600)),
-                            Icon(
-                              FontAwesomeIcons.arrowDown,
-                              color: Colors.redAccent,
-                              size: 35,
-                            ),
-                            Observer(
-                              builder: (_) {
-                                _expenseFormatter = FlutterMoneyFormatter(
-                                    amount: _bankAccountStore.expense,
-                                    settings: MoneyFormatterSettings(
-                                        thousandSeparator: '.',
-                                        decimalSeparator: ','));
-                                return Text(
-                                    '${_expenseFormatter.output.nonSymbol}',
+                        child: Observer(builder: (_) {
+                          if (_bankAccountStore
+                                  .currentTransactionAmountRequest.status !=
+                              FutureStatus.pending) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text('Despesas',
                                     style: TextStyle(
                                         color: Colors.redAccent,
                                         fontSize: 16,
-                                        fontWeight: FontWeight.w600));
-                              },
-                            )
-                          ],
-                        ),
+                                        fontWeight: FontWeight.w600)),
+                                Text('${_date.month}/${_date.year}',
+                                    style: TextStyle(
+                                        color: Colors.redAccent,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                                Icon(
+                                  FontAwesomeIcons.arrowDown,
+                                  color: Colors.redAccent,
+                                  size: 35,
+                                ),
+                                Observer(
+                                  builder: (_) {
+                                    _expenseFormatter = FlutterMoneyFormatter(
+                                        amount: _bankAccountStore.expense,
+                                        settings: MoneyFormatterSettings(
+                                            thousandSeparator: '.',
+                                            decimalSeparator: ','));
+                                    return Text(
+                                        '${_expenseFormatter.output.nonSymbol}',
+                                        style: TextStyle(
+                                            color: Colors.redAccent,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600));
+                                  },
+                                )
+                              ],
+                            );
+                          }
+                          return Center(
+                              child: CircularProgressIndicator(
+                                  backgroundColor: Colors.redAccent));
+                        }),
                       )
                     ],
                   ),
                   const SizedBox(height: 10),
                   FlatButton(
                     color: green,
-                    onPressed: ()=>Navigator.pushNamed(context, '/transaction/add', arguments: _bankAccountStore.bankAccountDto.id),
-                    child: Text("Adicionar",style: TextStyle(color: darker,fontWeight: FontWeight.w600)),
+                    onPressed: () => Navigator.pushNamed(
+                        context, '/transaction/add',
+                        arguments: _bankAccountStore.bankAccountDto),
+                    child: Text("Adicionar",
+                        style: TextStyle(
+                            color: darker, fontWeight: FontWeight.w600)),
                   ),
                   const SizedBox(height: 10),
-                  const Text('Últimas transações',
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const Text('Últimas transações',
                       style: TextStyle(
                           color: primaryText,
                           fontWeight: FontWeight.w600,
                           fontSize: 20)),
-                const SizedBox(height: 5),
+                      GestureDetector(
+                        child: Text('Ver todas',
+                      style: TextStyle(
+                          color: blue,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16)),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 5),
                   Observer(
                     builder: (_) {
                       if (_bankAccountStore
@@ -214,38 +258,58 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                           FutureStatus.fulfilled) {
                         if (_bankAccountStore
                                 .bankAccountTransactionsRequest.value.length >
-                            0) {                              
+                            0) {
                           return ListView.builder(
                               shrinkWrap: true,
                               itemCount: _bankAccountStore
                                   .bankAccountTransactionsRequest.value.length,
                               itemBuilder: (context, index) {
-                                final item  = _bankAccountStore
-                                  .bankAccountTransactionsRequest.value[index];
-                                _transactionAmountFormatter = FlutterMoneyFormatter(
-                                  amount: item.amount,
-                                  settings:  MoneyFormatterSettings(
-                                        thousandSeparator: '.',
-                                        decimalSeparator: ',')
-                                );
+                                final item = _bankAccountStore
+                                    .bankAccountTransactionsRequest
+                                    .value[index];
+                                _transactionAmountFormatter =
+                                    FlutterMoneyFormatter(
+                                        amount: item.amount,
+                                        settings: MoneyFormatterSettings(
+                                            thousandSeparator: '.',
+                                            decimalSeparator: ','));
                                 return Container(
                                   margin: EdgeInsets.all(2),
                                   decoration: BoxDecoration(
-                                    color: item.idTransactionType == 2 ? Colors.lightGreen : Colors.redAccent,
-                                    borderRadius: BorderRadius.circular(4)
-                                  ),
+                                      color: item.idTransactionType == 2
+                                          ? Colors.lightGreen
+                                          : Colors.redAccent,
+                                      borderRadius: BorderRadius.circular(4)),
                                   child: ListTile(
-                                  leading: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      item.status.toUpperCase() == 'OK' ? Icon(Icons.check,size: 35) : Icon(Icons.close,size: 35),
-                                      Text(item.status, style: TextStyle(color: darker, fontSize: 14, fontWeight: FontWeight.w600)),
+                                    leading: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        item.status.toUpperCase() == 'OK'
+                                            ? Icon(Icons.check, size: 35)
+                                            : Icon(Icons.close, size: 35),
+                                        Text(item.status,
+                                            style: TextStyle(
+                                                color: darker,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600)),
                                       ],
+                                    ),
+                                    title: Text(
+                                      '${item.category}',
+                                      style: TextStyle(
+                                          color: darker,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                    subtitle: Text(
+                                        item.idTransactionType == 1
+                                            ? 'Despesa'
+                                            : 'Receita',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600)),
+                                    trailing: Text(_transactionAmountFormatter
+                                        .output.nonSymbol),
                                   ),
-                                  title: Text('${item.category}', style: TextStyle(color: darker, fontWeight: FontWeight.w800),),
-                                  subtitle: Text(item.idTransactionType == 1 ? 'Despesa' : 'Receita', style: TextStyle(fontWeight: FontWeight.w600)),
-                                  trailing: Text(_transactionAmountFormatter.output.nonSymbol),
-                                ),
                                 );
                               });
                         }
@@ -271,13 +335,19 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         color: darker)),
-                                onPressed: () => Navigator.pushReplacementNamed(context, '/transaction/add', arguments: _bankAccountStore.bankAccountDto.id),
+                                onPressed: () => Navigator.pushReplacementNamed(
+                                    context, '/transaction/add',
+                                    arguments:
+                                        _bankAccountStore.bankAccountDto.id),
                               )
                             ],
                           ),
                         );
                       }
-                      return CircularProgressIndicator();
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Center(child: CircularProgressIndicator(backgroundColor: blue,)),
+                      );
                     },
                   )
                 ],
