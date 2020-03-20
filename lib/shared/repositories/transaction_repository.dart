@@ -31,7 +31,7 @@ class TransactionRepository{
     try {
       final response = await _dio.get('$url/transaction/$idBankAccount/5');
       for (var item in response.data) {
-          _response.add(TransactionDto.fromJson(response.data));
+          _response.add(TransactionDto.fromJson(item));
       }
       return _response;
     } catch (e) {
@@ -42,6 +42,15 @@ class TransactionRepository{
   Future<TransactionDto>add(TransactionDto transaction) async {
     try {
       final response = await _dio.post('$url/transaction',data: transaction.toJson());
+      return TransactionDto.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<TransactionDto> update(TransactionDto transaction) async {
+    try {
+      final response = await _dio.put('$url/transaction/${transaction.id}', data : transaction.toJson());
       return TransactionDto.fromJson(response.data);
     } catch (e) {
       rethrow;

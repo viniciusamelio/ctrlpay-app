@@ -37,8 +37,16 @@ abstract class _TransactionStore with Store {
   @observable
   ObservableFuture<TransactionDto> addRequest = ObservableFuture.value(null);
 
+  @observable
+  ObservableFuture<TransactionDto> updateRequest = ObservableFuture.value(null);
+
   @action 
   Future<void> add() async{
     addRequest = _transactionRepository.add(dto).asObservable();
+  }
+
+  @action 
+  Future<void> update() async{
+    updateRequest = _transactionRepository.update(dto).asObservable();
   }
 }

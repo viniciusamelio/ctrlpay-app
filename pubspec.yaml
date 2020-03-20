@@ -37,7 +37,8 @@ dependencies:
   flushbar: ^1.9.1
   image_picker: ^0.6.3+4  
   flutter_shimmer: ^1.2.0
-  flutter_money_formatter: ^0.8.3
+  flutter_money_formatter: ^0.8.3  
+  intl: ^0.15.8
   
 dev_dependencies:
   flutter_test:

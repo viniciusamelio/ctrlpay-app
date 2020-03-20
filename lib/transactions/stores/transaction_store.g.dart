@@ -78,10 +78,34 @@ mixin _$TransactionStore on _TransactionStore, Store {
     }, _$addRequestAtom, name: '${_$addRequestAtom.name}_set');
   }
 
+  final _$updateRequestAtom = Atom(name: '_TransactionStore.updateRequest');
+
+  @override
+  ObservableFuture<TransactionDto> get updateRequest {
+    _$updateRequestAtom.context.enforceReadPolicy(_$updateRequestAtom);
+    _$updateRequestAtom.reportObserved();
+    return super.updateRequest;
+  }
+
+  @override
+  set updateRequest(ObservableFuture<TransactionDto> value) {
+    _$updateRequestAtom.context.conditionallyRunInAction(() {
+      super.updateRequest = value;
+      _$updateRequestAtom.reportChanged();
+    }, _$updateRequestAtom, name: '${_$updateRequestAtom.name}_set');
+  }
+
   final _$addAsyncAction = AsyncAction('add');
 
   @override
   Future<void> add() {
     return _$addAsyncAction.run(() => super.add());
+  }
+
+  final _$updateAsyncAction = AsyncAction('update');
+
+  @override
+  Future<void> update() {
+    return _$updateAsyncAction.run(() => super.update());
   }
 }

@@ -122,10 +122,7 @@ class _AccountsPageState extends State<AccountsPage> {
                           title: Text(
                               '${_bankAccountStore.listRequest.value[index].description}',
                               style: TextStyle(color: primaryText),
-                              maxLines: 1),
-                          subtitle: Text(
-                              'R\$ ${_bankAccountStore.listRequest.value[index].totalAmount}',
-                              style: TextStyle(color: blue)),
+                              maxLines: 1),                          
                         );
                       })
                 ],

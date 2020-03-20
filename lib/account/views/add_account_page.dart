@@ -44,8 +44,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
             tittle: "Sucesso!",
             btnOkColor: Colors.green,
             btnOkOnPress: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, '/order');
             }).show();
       } else if (status == FutureStatus.rejected) {
         _showError(_bankAccountStore.addRequest.value.message);
@@ -104,7 +103,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
           } else {
             return FlatButton(
               onPressed: () {},
-              child: FadingText('Carregando...'),
+              child: FadingText('Carregando...', style: TextStyle(color: secondaryText)),
             );
           }
         },

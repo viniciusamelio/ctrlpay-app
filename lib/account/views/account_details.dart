@@ -35,6 +35,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
         (_) =>
             _bankAccountStore.getRequest.status == FutureStatus.fulfilled &&
             _bankAccountStore.getRequest.value != null, () {
+      _bankAccountStore.bankAccountDto = _bankAccountStore.getRequest.value;
       _bankAccountStore
           .getCurrentTransactionAmount(_bankAccountStore.getRequest.value.id);
     });
@@ -281,6 +282,10 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                           : Colors.redAccent,
                                       borderRadius: BorderRadius.circular(4)),
                                   child: ListTile(
+                                    onTap: ()=> Navigator.pushNamed(context, '/transaction/edit', arguments: {
+                                      "transaction" : item,
+                                      "bankAccount" : _bankAccountStore.bankAccountDto
+                                    }),
                                     leading: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -338,7 +343,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                 onPressed: () => Navigator.pushReplacementNamed(
                                     context, '/transaction/add',
                                     arguments:
-                                        _bankAccountStore.bankAccountDto.id),
+                                        _bankAccountStore.bankAccountDto),
                               )
                             ],
                           ),

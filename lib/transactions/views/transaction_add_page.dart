@@ -37,16 +37,19 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
       FutureStatus status = _transactionStore.addRequest.status;
       if (status == FutureStatus.fulfilled) {
         TransactionDto _value = _transactionStore.addRequest.value;
-        if (_value.idTransactionType == 1) {
-          _bankAccountDto.totalAmount -= _value.amount;
-        } else {
-          _bankAccountDto.totalAmount += _value.amount;
+        if (_value.status.toLowerCase() != 'pendente') {
+          if (_value.idTransactionType == 1) {
+            _bankAccountDto.totalAmount -= _value.amount;
+          } else {
+            _bankAccountDto.totalAmount += _value.amount;
+          }
+          _bankAccountStore.bankAccountDto = _bankAccountDto;
+          _bankAccountStore.update();
         }
-        _bankAccountStore.bankAccountDto = _bankAccountDto;
-        _bankAccountStore.update();
         _transactionStore.dto = TransactionDto();
         _transactionStore.selectedStatus = null;
         _transactionStore.selectedCategory = null;
+        _amountController.text = "";
         Flushbar(
           duration: Duration(seconds: 2),
           backgroundColor: Colors.green,
@@ -54,7 +57,9 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
           message: "Transação adicionada",
           mainButton: FlatButton(
             onPressed: () => Navigator.popUntil(
-                context, (route) => route.settings.name == '/account',),
+              context,
+              (route) => route.settings.name == '/account',
+            ),
             child: Text("Sair",
                 style:
                     TextStyle(color: primaryText, fontWeight: FontWeight.w600)),
@@ -87,7 +92,8 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     return Scaffold(
       backgroundColor: darker,
       floatingActionButton: Observer(builder: (_) {
-        if (_transactionStore.addRequest.status != FutureStatus.pending) {
+        if (_transactionStore.addRequest.status != FutureStatus.pending &&
+            _bankAccountStore.getRequest.status != FutureStatus.pending) {
           return FlatButton.icon(
               color: green,
               icon: Icon(Icons.save, color: darker),

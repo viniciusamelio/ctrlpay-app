@@ -246,15 +246,17 @@ class _HomePageState extends State<HomePage> {
                                         width: 50,
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle),
-                                        child:_user.data.avatar != null ? ClipOval(
-                                          child: Image.memory(
-                                                base64Decode(_user.data.avatar),
-                                                fit: BoxFit.fill),
-                                        ) :
-                                            Icon(
-                                              FontAwesomeIcons.solidUser,
-                                              color: secondaryBlue,
-                                            ),
+                                        child: _user.data.avatar != null
+                                            ? ClipOval(
+                                                child: Image.memory(
+                                                    base64Decode(
+                                                        _user.data.avatar),
+                                                    fit: BoxFit.fill),
+                                              )
+                                            : Icon(
+                                                FontAwesomeIcons.solidUser,
+                                                color: secondaryBlue,
+                                              ),
                                       ),
                                     ),
                                     SizedBox(width: 7),
@@ -427,7 +429,7 @@ class _HomePageState extends State<HomePage> {
                 icon: Icon(FontAwesomeIcons.exchangeAlt, color: primaryText),
                 title: 'Transações'),
             NavigationBlock(
-                action: () => Navigator.pushNamed(context, '/account') ,
+                action: () => Navigator.pushNamed(context, '/account'),
                 icon: Icon(FontAwesomeIcons.wallet, color: primaryText),
                 title: 'Carteira'),
             NavigationBlock(
@@ -437,6 +439,7 @@ class _HomePageState extends State<HomePage> {
                 icon: Icon(FontAwesomeIcons.chartBar, color: primaryText),
                 title: 'Relatórios'),
             NavigationBlock(
+                action: () => Navigator.pushNamed(context, '/profile'),
                 icon: Icon(FontAwesomeIcons.solidUser, color: primaryText),
                 title: 'Perfil'),
             NavigationBlock(
