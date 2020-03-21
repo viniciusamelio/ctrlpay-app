@@ -39,6 +39,19 @@ class TransactionRepository{
     }
   }
 
+  Future<List<TransactionDto>> listPending(int idUser) async {
+    List<TransactionDto> _response = [];
+    try {
+      final response = await _dio.get('$url/transaction/$idUser/pending');
+      for (var item in response.data) {
+          _response.add(TransactionDto.fromJson(item));
+      }
+      return _response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<TransactionDto>> listAll(int idUser) async {
     List<TransactionDto> _response = [];
     try {

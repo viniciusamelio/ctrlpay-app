@@ -56,10 +56,10 @@ class BankAccountRepository {
     }
   }
 
-  Future<List<TransactionDto>> listTransactions(int id) async {
+  Future<List<TransactionDto>> listTransactions(int id, {int limit = 1000}) async {
     try {
       final List<TransactionDto> _response = [];
-      final response = await _dio.get('$url/account/transactions/$id');
+      final response = await _dio.get('$url/account/transactions/$id/$limit');
       for (var item in response.data) {
         _response.add(TransactionDto.fromJson(item));
       }

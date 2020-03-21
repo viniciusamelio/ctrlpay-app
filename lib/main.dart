@@ -1,4 +1,5 @@
 import 'package:ctrl_money/account/views/account_details.dart';
+import 'package:ctrl_money/account/views/account_transactions_page.dart';
 import 'package:ctrl_money/account/views/accounts_page.dart';
 import 'package:ctrl_money/account/views/add_account_page.dart';
 import 'package:ctrl_money/home/views/home_page.dart';
@@ -9,6 +10,7 @@ import 'package:ctrl_money/signup/views/signup_page.dart';
 import 'package:ctrl_money/transactions/views/transaction_add_page.dart';
 import 'package:ctrl_money/transactions/views/transaction_edit_page.dart';
 import 'package:ctrl_money/transactions/views/transaction_list_page.dart';
+import 'package:ctrl_money/transactions/views/transaction_list_pending.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -50,8 +52,10 @@ class MyApp extends StatelessWidget {
         '/account' : (context) => AccountsPage(),
         '/account/add': (context) => AddAccountPage(),
         '/account/details' : (context) => AccountDetailsPage(),
+        '/account/transactions': (context) => AccountTransactionsPage(),
         '/transaction/add' : (context) => TransactionAddPage(),
         '/transaction' : (context) => TransactionListPage(),
+        '/transaction/pending' : (context) => TransactionListPendingPage(),
         '/transaction/edit' : (context) => TransactionEditPage()
       },
     );

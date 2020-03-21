@@ -6,8 +6,9 @@ import 'package:intl/intl.dart';
 
 class TransactionTile extends StatelessWidget {
   final TransactionDto transactionDto;
+  final Function onTap;
   FlutterMoneyFormatter _amountFormatter;
-  TransactionTile({Key key, this.transactionDto}) : super(key: key);
+  TransactionTile({Key key, this.transactionDto, this.onTap}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     _amountFormatter = FlutterMoneyFormatter(
@@ -24,6 +25,7 @@ class TransactionTile extends StatelessWidget {
                   : Colors.redAccent,
               borderRadius: BorderRadius.circular(4)),
           child: ListTile(
+            onTap: onTap,
             leading: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

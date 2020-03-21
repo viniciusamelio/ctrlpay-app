@@ -64,7 +64,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
       final id = ModalRoute.of(context).settings.arguments as int;
       _bankAccountStore.bankAccountDto.id = id;
       _bankAccountStore.get(id);
-      _bankAccountStore.getBankAccountTransactions(id);
+      _bankAccountStore.getBankAccountTransactions(id, limit: 3);
       _loaded = true;
     }
     super.didChangeDependencies();
@@ -82,16 +82,15 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                 _bankAccountStore.getRequest.value != null) {
               return Text(
                   '${_bankAccountStore.getRequest.value.accountDescription}',
-                  style: TextStyle(
-                      color: primaryText,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18));
+                  style: TextStyle(color: primaryText, fontSize: 18));
+            }
+            if(_bankAccountStore.getRequest.status == FutureStatus.rejected){
+              return Text(
+                  'Ops!',
+                  style: TextStyle(color: Colors.redAccent,fontSize: 18));
             }
             return FadingText('Conta bancária',
-                style: TextStyle(
-                    color: primaryText,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18));
+                style: TextStyle(color: primaryText, fontSize: 18));
           },
         ),
       ),
@@ -238,16 +237,35 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const Text('Últimas transações',
-                      style: TextStyle(
-                          color: primaryText,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20)),
-                      GestureDetector(
-                        child: Text('Ver todas',
-                      style: TextStyle(
-                          color: blue,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16)),
+                          style: TextStyle(
+                              color: primaryText,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20)),
+                      Observer(
+                        builder: (_) {
+                          if (_bankAccountStore
+                                  .bankAccountTransactionsRequest.status ==
+                              FutureStatus.fulfilled) {
+                            return _bankAccountStore
+                                        .bankAccountTransactionsRequest
+                                        .value
+                                        .length >
+                                    2
+                                ? GestureDetector(
+                                    onTap: () => Navigator.pushNamed(
+                                        context, '/account/transactions',
+                                        arguments: _bankAccountStore
+                                            .bankAccountDto.id),
+                                    child: Text('Ver todas',
+                                        style: TextStyle(
+                                            color: blue,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16)),
+                                  )
+                                : Container();
+                          }
+                          return Container();
+                        },
                       )
                     ],
                   ),
@@ -282,10 +300,13 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                           : Colors.redAccent,
                                       borderRadius: BorderRadius.circular(4)),
                                   child: ListTile(
-                                    onTap: ()=> Navigator.pushNamed(context, '/transaction/edit', arguments: {
-                                      "transaction" : item,
-                                      "bankAccount" : _bankAccountStore.bankAccountDto
-                                    }),
+                                    onTap: () => Navigator.pushNamed(
+                                        context, '/transaction/edit',
+                                        arguments: {
+                                          "transaction": item,
+                                          "bankAccount":
+                                              _bankAccountStore.bankAccountDto
+                                        }),
                                     leading: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -351,7 +372,10 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                       }
                       return Padding(
                         padding: const EdgeInsets.only(top: 20.0),
-                        child: Center(child: CircularProgressIndicator(backgroundColor: blue,)),
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          backgroundColor: blue,
+                        )),
                       );
                     },
                   )

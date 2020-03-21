@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ctrl_money/home/repositories/home_repository.dart';
 import 'package:ctrl_money/home/stores/home_store.dart';
 import 'package:ctrl_money/shared/components/navigation/navigation_block.dart';
 import 'package:ctrl_money/shared/models/user.dart';
@@ -12,6 +13,7 @@ import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobx/mobx.dart';
@@ -26,12 +28,13 @@ class _HomePageState extends State<HomePage> {
   UserStore _userStore;
   User _user;
   List<Widget> _accountsList;
-
+  FlutterMoneyFormatter _expensesFormatter;
+  FlutterMoneyFormatter _earningsFormatter;
   @override
   void initState() {
-    _homeStore = HomeStore();
+    _homeStore = HomeStore(HomeReposiory(CustomDio()));
     _userStore = UserStore(UserRepository(CustomDio()), AuthStorage());
-    _user = User.instance;    
+    _user = User.instance;
     when((_) => _userStore.currentUserRequest.value != null, () {
       _userStore.user =
           UserDto.fromJson(jsonDecode(_userStore.currentUserRequest.value));
@@ -46,10 +49,46 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
-    if(_user.data != null){
-      _userStore.get(_user.data.id.toString());
+    if (_user.data.id != null) {
+      _userStore.get(_user.data.id);
     }
+    _homeStore.getPending(_user.data.id);
 
+    reaction((_) => _homeStore.pendingRequest.status, (_) {
+      FutureStatus status = _homeStore.pendingRequest.status;
+      print(status);
+      if (status == FutureStatus.fulfilled) {
+        final value = _homeStore.pendingRequest.value;
+        if (value != null) {
+          if (value.length > 0) {
+            bool hasPendingEarnings =
+                value.where((e) => e.idTransactionType == 2).isNotEmpty;
+            bool hasPendingExpenses =
+                value.where((e) => e.idTransactionType == 1).isNotEmpty;
+            if (hasPendingEarnings) {
+              _homeStore.pendingEarnings = value
+                  .where((e) => e.idTransactionType == 2)
+                  .toList()[0]
+                  .amount;
+              _earningsFormatter = FlutterMoneyFormatter(
+                  amount: _homeStore.pendingEarnings,
+                  settings: MoneyFormatterSettings(
+                      decimalSeparator: ',', thousandSeparator: '.'));
+            }
+            if (hasPendingExpenses) {
+              _homeStore.pendingExpenses = value
+                  .where((e) => e.idTransactionType == 1)
+                  .toList()[0]
+                  .amount;
+              _expensesFormatter = FlutterMoneyFormatter(
+                  amount: _homeStore.pendingExpenses,
+                  settings: MoneyFormatterSettings(
+                      decimalSeparator: ',', thousandSeparator: '.'));
+            }
+          }
+        }
+      }
+    });
     super.initState();
   }
 
@@ -112,12 +151,25 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text("R\$0,00",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.red[400],
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 40)),
+                          child: Observer(builder: (_) {
+                            if (_homeStore.pendingRequest.status !=
+                                FutureStatus.pending) {
+                              return Text(
+                                  "${_expensesFormatter?.output?.nonSymbol ?? '0,00'}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.red[400],
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 40));
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                backgroundColor: Colors.red[600],
+                              )),
+                            );
+                          }),
                         )
                       ],
                     ),
@@ -127,14 +179,21 @@ class _HomePageState extends State<HomePage> {
                 fit: FlexFit.tight,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  child: FlatButton(
-                    child: Text(
-                      'Revisar',
-                      style: TextStyle(color: primaryText, fontSize: 15),
-                    ),
-                    color: blue,
-                    onPressed: () {},
-                  ),
+                  child: Observer(builder: (_) {
+                    if(_homeStore.pendingExpenses!= 0){
+                      return FlatButton(
+                      child: Text(
+                        'Revisar',
+                        style: TextStyle(color: primaryText, fontSize: 15),
+                      ),
+                      color: blue,
+                      onPressed: () => Navigator.pushNamed(
+                          context, '/transaction/pending',
+                          arguments: _user.data.id),
+                    );
+                    }
+                    return Container();
+                  }),
                 ),
               )
             ],
@@ -191,12 +250,25 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text("R\$0,00",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 40)),
+                          child: Observer(builder: (_) {
+                            if (_homeStore.pendingRequest.status !=
+                                FutureStatus.pending) {
+                              return Text(
+                                  "${_earningsFormatter?.output?.nonSymbol ?? '0,00'}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 40));
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                backgroundColor: Colors.green,
+                              )),
+                            );
+                          }),
                         )
                       ],
                     ),
@@ -206,14 +278,21 @@ class _HomePageState extends State<HomePage> {
                 fit: FlexFit.tight,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  child: FlatButton(
-                    child: Text(
-                      'Revisar',
-                      style: TextStyle(color: primaryText, fontSize: 15),
-                    ),
-                    color: blue,
-                    onPressed: () {},
-                  ),
+                  child: Observer(builder: (_) {
+                    if (_homeStore.pendingEarnings != 0) {
+                      return FlatButton(
+                        child: Text(
+                          'Revisar',
+                          style: TextStyle(color: primaryText, fontSize: 15),
+                        ),
+                        color: blue,
+                        onPressed: () => Navigator.pushNamed(
+                            context, '/transaction/pending',
+                            arguments: _user.data.id),
+                      );
+                    }
+                    return Container();
+                  }),
                 ),
               )
             ],
@@ -430,7 +509,8 @@ class _HomePageState extends State<HomePage> {
           physics: BouncingScrollPhysics(),
           children: <Widget>[
             NavigationBlock(
-                action: ()=>Navigator.pushNamed(context, '/transaction', arguments: _user.data.id),
+                action: () => Navigator.pushNamed(context, '/transaction',
+                    arguments: _user.data.id),
                 icon: Icon(FontAwesomeIcons.exchangeAlt, color: primaryText),
                 title: 'Transações'),
             NavigationBlock(

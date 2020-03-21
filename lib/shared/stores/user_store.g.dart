@@ -81,7 +81,7 @@ mixin _$UserStore on _UserStore, Store {
   final _$getAsyncAction = AsyncAction('get');
 
   @override
-  Future<void> get(String id) {
+  Future<void> get(int id) {
     return _$getAsyncAction.run(() => super.get(id));
   }
 

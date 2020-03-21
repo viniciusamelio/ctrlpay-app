@@ -25,4 +25,62 @@ mixin _$HomeStore on _HomeStore, Store {
       _$slideIndexAtom.reportChanged();
     }, _$slideIndexAtom, name: '${_$slideIndexAtom.name}_set');
   }
+
+  final _$pendingRequestAtom = Atom(name: '_HomeStore.pendingRequest');
+
+  @override
+  ObservableFuture<List<PendingTransactionDto>> get pendingRequest {
+    _$pendingRequestAtom.context.enforceReadPolicy(_$pendingRequestAtom);
+    _$pendingRequestAtom.reportObserved();
+    return super.pendingRequest;
+  }
+
+  @override
+  set pendingRequest(ObservableFuture<List<PendingTransactionDto>> value) {
+    _$pendingRequestAtom.context.conditionallyRunInAction(() {
+      super.pendingRequest = value;
+      _$pendingRequestAtom.reportChanged();
+    }, _$pendingRequestAtom, name: '${_$pendingRequestAtom.name}_set');
+  }
+
+  final _$pendingEarningsAtom = Atom(name: '_HomeStore.pendingEarnings');
+
+  @override
+  double get pendingEarnings {
+    _$pendingEarningsAtom.context.enforceReadPolicy(_$pendingEarningsAtom);
+    _$pendingEarningsAtom.reportObserved();
+    return super.pendingEarnings;
+  }
+
+  @override
+  set pendingEarnings(double value) {
+    _$pendingEarningsAtom.context.conditionallyRunInAction(() {
+      super.pendingEarnings = value;
+      _$pendingEarningsAtom.reportChanged();
+    }, _$pendingEarningsAtom, name: '${_$pendingEarningsAtom.name}_set');
+  }
+
+  final _$pendingExpensesAtom = Atom(name: '_HomeStore.pendingExpenses');
+
+  @override
+  double get pendingExpenses {
+    _$pendingExpensesAtom.context.enforceReadPolicy(_$pendingExpensesAtom);
+    _$pendingExpensesAtom.reportObserved();
+    return super.pendingExpenses;
+  }
+
+  @override
+  set pendingExpenses(double value) {
+    _$pendingExpensesAtom.context.conditionallyRunInAction(() {
+      super.pendingExpenses = value;
+      _$pendingExpensesAtom.reportChanged();
+    }, _$pendingExpensesAtom, name: '${_$pendingExpensesAtom.name}_set');
+  }
+
+  final _$getPendingAsyncAction = AsyncAction('getPending');
+
+  @override
+  Future<void> getPending(int idUser) {
+    return _$getPendingAsyncAction.run(() => super.getPending(idUser));
+  }
 }

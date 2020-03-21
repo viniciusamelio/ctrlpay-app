@@ -57,4 +57,9 @@ abstract class _TransactionStore with Store {
   Future<void> list(int idUser) async {
     listRequest = _transactionRepository.listAll(idUser).asObservable();
   }
+
+  @action 
+  Future<void> listPending(int idUser) async {
+    listRequest = _transactionRepository.listPending(idUser).asObservable();
+  }
 }

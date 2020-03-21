@@ -243,8 +243,8 @@ mixin _$BankAccountStore on _BankAccountStore, Store {
       AsyncAction('getBankAccountTransactions');
 
   @override
-  Future<void> getBankAccountTransactions(int id) {
+  Future<void> getBankAccountTransactions(int id, {int limit}) {
     return _$getBankAccountTransactionsAsyncAction
-        .run(() => super.getBankAccountTransactions(id));
+        .run(() => super.getBankAccountTransactions(id, limit: limit));
   }
 }

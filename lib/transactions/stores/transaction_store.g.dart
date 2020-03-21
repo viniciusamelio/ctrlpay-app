@@ -132,4 +132,11 @@ mixin _$TransactionStore on _TransactionStore, Store {
   Future<void> list(int idUser) {
     return _$listAsyncAction.run(() => super.list(idUser));
   }
+
+  final _$listPendingAsyncAction = AsyncAction('listPending');
+
+  @override
+  Future<void> listPending(int idUser) {
+    return _$listPendingAsyncAction.run(() => super.listPending(idUser));
+  }
 }

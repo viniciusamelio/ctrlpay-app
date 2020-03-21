@@ -72,7 +72,12 @@ abstract class _BankAccountStore with Store{
   }
 
   @action 
-  Future<void> getBankAccountTransactions(int id) async {
-    bankAccountTransactionsRequest = bankAccountRepository.listTransactions(id).asObservable();
+  Future<void> getBankAccountTransactions(int id, {int limit}) async {
+    if(limit!=null){
+      bankAccountTransactionsRequest = bankAccountRepository.listTransactions(id,limit: limit).asObservable();
+    }else{
+      bankAccountTransactionsRequest = bankAccountRepository.listTransactions(id).asObservable();
+    }
+    
   }
 }

@@ -124,11 +124,6 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
                       : Colors.redAccent,
                   borderRadius: BorderRadius.circular(4)),
               child: ListTile(
-                onTap: () => Navigator.pushNamed(context, '/transaction/edit',
-                    arguments: {
-                      "transaction": _transactionStore.dto,
-                      "bankAccount": _bankAccountStore.bankAccountDto
-                    }),
                 leading: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

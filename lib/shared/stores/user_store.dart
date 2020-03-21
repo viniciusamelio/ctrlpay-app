@@ -30,7 +30,7 @@ abstract class _UserStore with Store {
   UserDto user;
 
   @action
-  Future<void> get(String id) async {
+  Future<void> get(int id) async {
     getRequest = _userRepository.get(id).asObservable();
   }
 
