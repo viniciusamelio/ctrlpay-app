@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     _homeStore = HomeStore();
     _userStore = UserStore(UserRepository(CustomDio()), AuthStorage());
-    _user = User.instance;
+    _user = User.instance;    
     when((_) => _userStore.currentUserRequest.value != null, () {
       _userStore.user =
           UserDto.fromJson(jsonDecode(_userStore.currentUserRequest.value));
@@ -45,6 +45,10 @@ class _HomePageState extends State<HomePage> {
             .pushNamedAndRemoveUntil('/login', ModalRoute.withName('/login'));
       }
     });
+
+    if(_user.data != null){
+      _userStore.get(_user.data.id.toString());
+    }
 
     super.initState();
   }
@@ -426,6 +430,7 @@ class _HomePageState extends State<HomePage> {
           physics: BouncingScrollPhysics(),
           children: <Widget>[
             NavigationBlock(
+                action: ()=>Navigator.pushNamed(context, '/transaction', arguments: _user.data.id),
                 icon: Icon(FontAwesomeIcons.exchangeAlt, color: primaryText),
                 title: 'Transações'),
             NavigationBlock(

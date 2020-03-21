@@ -40,6 +40,9 @@ abstract class _TransactionStore with Store {
   @observable
   ObservableFuture<TransactionDto> updateRequest = ObservableFuture.value(null);
 
+  @observable
+  ObservableFuture<List<TransactionDto>> listRequest = ObservableFuture.value(null);
+
   @action 
   Future<void> add() async{
     addRequest = _transactionRepository.add(dto).asObservable();
@@ -48,5 +51,10 @@ abstract class _TransactionStore with Store {
   @action 
   Future<void> update() async{
     updateRequest = _transactionRepository.update(dto).asObservable();
+  }
+
+  @action 
+  Future<void> list(int idUser) async {
+    listRequest = _transactionRepository.listAll(idUser).asObservable();
   }
 }

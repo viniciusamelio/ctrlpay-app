@@ -95,6 +95,23 @@ mixin _$TransactionStore on _TransactionStore, Store {
     }, _$updateRequestAtom, name: '${_$updateRequestAtom.name}_set');
   }
 
+  final _$listRequestAtom = Atom(name: '_TransactionStore.listRequest');
+
+  @override
+  ObservableFuture<List<TransactionDto>> get listRequest {
+    _$listRequestAtom.context.enforceReadPolicy(_$listRequestAtom);
+    _$listRequestAtom.reportObserved();
+    return super.listRequest;
+  }
+
+  @override
+  set listRequest(ObservableFuture<List<TransactionDto>> value) {
+    _$listRequestAtom.context.conditionallyRunInAction(() {
+      super.listRequest = value;
+      _$listRequestAtom.reportChanged();
+    }, _$listRequestAtom, name: '${_$listRequestAtom.name}_set');
+  }
+
   final _$addAsyncAction = AsyncAction('add');
 
   @override
@@ -107,5 +124,12 @@ mixin _$TransactionStore on _TransactionStore, Store {
   @override
   Future<void> update() {
     return _$updateAsyncAction.run(() => super.update());
+  }
+
+  final _$listAsyncAction = AsyncAction('list');
+
+  @override
+  Future<void> list(int idUser) {
+    return _$listAsyncAction.run(() => super.list(idUser));
   }
 }
