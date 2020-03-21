@@ -49,7 +49,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
         _transactionStore.dto = TransactionDto();
         _transactionStore.selectedStatus = null;
         _transactionStore.selectedCategory = null;
-        _amountController.text = "";
+        _amountController.text = '0';
         Flushbar(
           duration: Duration(seconds: 2),
           backgroundColor: Colors.green,

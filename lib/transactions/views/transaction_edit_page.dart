@@ -29,14 +29,15 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
     _bankAccountStore = BankAccountStore(BankAccountRepository(CustomDio()));
     reaction((_) => _transactionStore.updateRequest.status, (_) {
       if (_transactionStore.updateRequest.status == FutureStatus.fulfilled) {
-        TransactionDto _value = _transactionStore.addRequest.value;
-        if (_value.idTransactionType == 1) {
-          _bankAccountStore.bankAccountDto.totalAmount -= _value.amount;
+        if (_transactionStore.dto.idTransactionType == 1) {
+          _bankAccountStore.bankAccountDto.totalAmount -= _transactionStore.dto.amount;
         } else {
-          _bankAccountStore.bankAccountDto.totalAmount += _value.amount;
+          _bankAccountStore.bankAccountDto.totalAmount += _transactionStore.dto.amount;
         }
         _bankAccountStore.update();
-
+        setState(() {
+          _transactionStore.dto.status = 'Ok';
+        });
         Flushbar(
           duration: Duration(seconds: 2),
           backgroundColor: blue,
@@ -67,6 +68,7 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
           amount: _transactionStore.dto.amount,
           settings: MoneyFormatterSettings(
               thousandSeparator: '.', decimalSeparator: ','));
+      loaded = true;
     }
     super.didChangeDependencies();
   }
