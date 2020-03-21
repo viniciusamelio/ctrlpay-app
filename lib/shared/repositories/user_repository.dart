@@ -17,6 +17,7 @@ class UserRepository implements IUserRepository {
   Future<UserDto> get(int id) async {
     try {
       final response = await _dio.get("$url/user/$id");
+      print(response.data);
       return UserDto.fromJson(response.data);
     } catch (e) {
       rethrow;

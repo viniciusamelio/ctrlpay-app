@@ -5,6 +5,7 @@ class UserDto {
   String birthDate;
   String avatar;
   String message;
+  double totalAmount;
 
   UserDto({this.id, this.name, this.email, this.birthDate, this.avatar});
 
@@ -15,6 +16,7 @@ class UserDto {
     birthDate = json['birth_date'];
     avatar = json['avatar'];
     message = json['message'];
+    totalAmount = double.tryParse(json['total_amount'].toString());
   }
 
   Map<String, dynamic> toJson() {
@@ -24,6 +26,7 @@ class UserDto {
     data['email'] = this.email;
     data['birth_date'] = this.birthDate;
     data['avatar'] = this.avatar;
+    data['total_amount'] = this.totalAmount;
     return data;
   }
 }

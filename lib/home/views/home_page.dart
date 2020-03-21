@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage> {
       _userStore.user =
           UserDto.fromJson(jsonDecode(_userStore.currentUserRequest.value));
       _user.data = _userStore.user;
+      _homeStore.getPending(_user.data.id);
     });
 
     reaction((_) => _userStore.logoutRequest.status, (_) {
@@ -52,11 +53,10 @@ class _HomePageState extends State<HomePage> {
     if (_user.data.id != null) {
       _userStore.get(_user.data.id);
     }
-    _homeStore.getPending(_user.data.id);
+    
 
     reaction((_) => _homeStore.pendingRequest.status, (_) {
       FutureStatus status = _homeStore.pendingRequest.status;
-      print(status);
       if (status == FutureStatus.fulfilled) {
         final value = _homeStore.pendingRequest.value;
         if (value != null) {
@@ -373,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                           Text('R\$',
                               style: TextStyle(
                                   color: secondaryText, fontSize: 18)),
-                          Text('2.000,00',
+                          Text('${_user.data.totalAmount ?? '0,00'}',
                               style: TextStyle(
                                   color: primaryText,
                                   fontSize: 30,

@@ -15,7 +15,7 @@ class HomeReposiory implements IHomeRepository{
   Future<List<PendingTransactionDto>> listPending(int idUser) async {
     List<PendingTransactionDto> list = [];
     try {
-      final response = await _dio.get('$url/user/$idUser/pending');
+      final response = await _dio.get('$url/transaction/$idUser/pending');
       for (var item in response.data) {
         list.add(PendingTransactionDto.fromJson(item));
       }

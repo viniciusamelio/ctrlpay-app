@@ -44,7 +44,8 @@ class _AddAccountPageState extends State<AddAccountPage> {
             tittle: "Sucesso!",
             btnOkColor: Colors.green,
             btnOkOnPress: () {
-              Navigator.pushReplacementNamed(context, '/order');
+              Navigator.pop(context);
+              Navigator.pop(context,true);
             }).show();
       } else if (status == FutureStatus.rejected) {
         _showError(_bankAccountStore.addRequest.value.message);

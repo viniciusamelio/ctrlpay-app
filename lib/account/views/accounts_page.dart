@@ -98,7 +98,11 @@ class _AccountsPageState extends State<AccountsPage> {
               floatingActionButton: FlatButton.icon(
                 textColor: darker,
                 color: green,
-                  onPressed: ()=>Navigator.pushNamed(context, '/account/add'),
+                  onPressed: () async
+                  {
+                    await Navigator.pushNamed(context, '/account/add');
+                    
+                  },
                   icon: Icon(Icons.add),
                   label: Text('Adicionar',style: TextStyle(fontWeight: FontWeight.w700))),
               body: Column(
