@@ -1,16 +1,17 @@
-# ctrl_money
+# CtrlPay
 
-A new Flutter project.
+Esse projeto se trata de um app mobile de gestão financeira, desenvolvido em Flutter e consumindo uma API desenvolvida em Node.
 
-## Getting Started
+## Recursos utilizados
+- MobX;
+- Programação Orientada à interfaces;
+- Data Transfer Object Pattern;
+- Repository Pattern;
+- Bloc Pattern.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features (WIP)
+- Gestão de transações;
+- Gestão de contas bancárias;
+- Geração de relatórios;
+- Autenticação;
+- Edição de senha e avatar (conta de usuário).
