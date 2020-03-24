@@ -1,6 +1,7 @@
 import 'package:ctrl_money/account/repositories/bank_account_repository.dart';
 import 'package:ctrl_money/account/stores/bank_account_store.dart';
 import 'package:ctrl_money/shared/models/transaction_dto.dart';
+import 'package:ctrl_money/shared/models/user.dart';
 import 'package:ctrl_money/shared/repositories/transaction_repository.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
@@ -23,16 +24,20 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
   BankAccountStore _bankAccountStore;
   FlutterMoneyFormatter _amountFormatter;
   bool loaded = false;
+  User _user;
   @override
   void initState() {
+    _user = User.instance;
     _transactionStore = TransactionStore(TransactionRepository(CustomDio()));
     _bankAccountStore = BankAccountStore(BankAccountRepository(CustomDio()));
     reaction((_) => _transactionStore.updateRequest.status, (_) {
       if (_transactionStore.updateRequest.status == FutureStatus.fulfilled) {
         if (_transactionStore.dto.idTransactionType == 1) {
           _bankAccountStore.bankAccountDto.totalAmount -= _transactionStore.dto.amount;
+          _user.data.totalAmount -= _transactionStore.dto.amount;
         } else {
           _bankAccountStore.bankAccountDto.totalAmount += _transactionStore.dto.amount;
+          _user.data.totalAmount += _transactionStore.dto.amount;
         }
         _bankAccountStore.update();
         setState(() {

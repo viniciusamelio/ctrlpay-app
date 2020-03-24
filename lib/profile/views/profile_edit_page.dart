@@ -143,7 +143,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               style: TextStyle(color: primaryText)),
                         )
                       : FlatButton.icon(
-                          color: Colors.deepPurple,
+                          color: blue,
                           label: Text("Selecionar"),
                           onPressed: () async =>
                               await _profileStore.getAvatar(),

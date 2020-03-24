@@ -84,10 +84,9 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                   '${_bankAccountStore.getRequest.value.accountDescription}',
                   style: TextStyle(color: primaryText, fontSize: 18));
             }
-            if(_bankAccountStore.getRequest.status == FutureStatus.rejected){
-              return Text(
-                  'Ops!',
-                  style: TextStyle(color: Colors.redAccent,fontSize: 18));
+            if (_bankAccountStore.getRequest.status == FutureStatus.rejected) {
+              return Text('Ops!',
+                  style: TextStyle(color: Colors.redAccent, fontSize: 18));
             }
             return FadingText('Conta bancária',
                 style: TextStyle(color: primaryText, fontSize: 18));
@@ -223,15 +222,26 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  FlatButton(
-                    color: green,
-                    onPressed: () => Navigator.pushNamed(
-                        context, '/transaction/add',
-                        arguments: _bankAccountStore.bankAccountDto),
-                    child: Text("Adicionar",
-                        style: TextStyle(
-                            color: darker, fontWeight: FontWeight.w600)),
-                  ),
+                  Observer(builder: (_) {
+                    if (_bankAccountStore
+                            .bankAccountTransactionsRequest.value !=
+                        null) {
+                      if (_bankAccountStore
+                              .bankAccountTransactionsRequest.value.length >
+                          0) {
+                        return FlatButton(
+                          color: green,
+                          onPressed: () => Navigator.pushNamed(
+                              context, '/transaction/add',
+                              arguments: _bankAccountStore.bankAccountDto),
+                          child: Text("Adicionar",
+                              style: TextStyle(
+                                  color: darker, fontWeight: FontWeight.w600)),
+                        );
+                      }
+                    }
+                    return Container();
+                  }),
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

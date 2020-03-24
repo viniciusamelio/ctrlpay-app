@@ -34,6 +34,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
     reaction((_) => _bankAccountStore.addRequest.status, (_) {
       FutureStatus status = _bankAccountStore.addRequest.status;
       if (status == FutureStatus.fulfilled) {
+        _user.data.totalAmount += _bankAccountStore.addRequest.value.totalAmount;
         AwesomeDialog(
             context: context,
             dialogType: DialogType.SUCCES,

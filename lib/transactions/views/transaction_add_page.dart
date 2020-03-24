@@ -3,6 +3,7 @@ import 'package:ctrl_money/account/repositories/bank_account_repository.dart';
 import 'package:ctrl_money/account/stores/bank_account_store.dart';
 import 'package:ctrl_money/shared/components/select.dart';
 import 'package:ctrl_money/shared/models/transaction_dto.dart';
+import 'package:ctrl_money/shared/models/user.dart';
 import 'package:ctrl_money/shared/repositories/transaction_repository.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
@@ -24,11 +25,13 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   TransactionStore _transactionStore;
   BankAccountStore _bankAccountStore;
   BankAccountDto _bankAccountDto;
+  User _user;
   int _type = 1;
   int idBankAccount;
 
   @override
   void initState() {
+    _user = User.instance;
     _amountController = MoneyMaskedTextController();
     _transactionKey = GlobalKey<FormState>();
     _transactionStore = TransactionStore(TransactionRepository(CustomDio()));
@@ -40,10 +43,13 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
         if (_value.status.toLowerCase() != 'pendente') {
           if (_value.idTransactionType == 1) {
             _bankAccountDto.totalAmount -= _value.amount;
+            _user.data.totalAmount -= _value.amount;
           } else {
             _bankAccountDto.totalAmount += _value.amount;
+            _user.data.totalAmount += _value.amount;
           }
           _bankAccountStore.bankAccountDto = _bankAccountDto;
+          
           _bankAccountStore.update();
         }
         _transactionStore.dto = TransactionDto();
@@ -193,7 +199,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                   groupValue: _type,
                                   onChanged: (e) {
                                     _transactionStore.transactionType = e;
-                                    print(_transactionStore.transactionType);
                                     setState(() {
                                       _type = e;
                                     });

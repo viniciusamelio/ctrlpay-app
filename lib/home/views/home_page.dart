@@ -11,6 +11,7 @@ import 'package:ctrl_money/shared/services/auth_service.dart';
 import 'package:ctrl_money/shared/stores/user_store.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
+import 'package:ctrl_money/shared/utils/masks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
@@ -48,12 +49,7 @@ class _HomePageState extends State<HomePage> {
         Navigator.of(context)
             .pushNamedAndRemoveUntil('/login', ModalRoute.withName('/login'));
       }
-    });
-
-    if (_user.data.id != null) {
-      _userStore.get(_user.data.id);
-    }
-    
+    });        
 
     reaction((_) => _homeStore.pendingRequest.status, (_) {
       FutureStatus status = _homeStore.pendingRequest.status;
@@ -90,6 +86,14 @@ class _HomePageState extends State<HomePage> {
       }
     });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_user.data.id != null) {
+      _userStore.get(_user.data.id);
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -373,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                           Text('R\$',
                               style: TextStyle(
                                   color: secondaryText, fontSize: 18)),
-                          Text('${_user.data.totalAmount ?? '0,00'}',
+                          Text('${moneyMask(_user.data.totalAmount) ?? '0,00'}',
                               style: TextStyle(
                                   color: primaryText,
                                   fontSize: 30,
