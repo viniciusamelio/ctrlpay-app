@@ -34,8 +34,8 @@ class _LoginPageState extends State<LoginPage> {
         _showError(_authStore.response.result['message']);
       } else if (_authStore.response.status == FutureStatus.fulfilled) {
         await _authStore.saveUser(_authStore.response.value).whenComplete(() =>
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomePage())));
+            Navigator.pushReplacementNamed(
+                context, '/home'));
       }
     });
 

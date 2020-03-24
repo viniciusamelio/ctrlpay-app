@@ -5,6 +5,7 @@ import 'package:ctrl_money/shared/utils/custom_dio.dart';
 import 'package:ctrl_money/transactions/stores/transaction_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:mobx/mobx.dart';
 
 class TransactionListPage extends StatefulWidget {
@@ -55,9 +56,46 @@ class _TransactionListPageState extends State<TransactionListPage> {
               }),
             );
           }
-          return Center(
-            child: CircularProgressIndicator(backgroundColor: blue),
+          return ListView(
+            children: <Widget>[
+              ListTileShimmer(
+                hasBottomBox: true,
+                isDarkMode: false,
+                isDisabledButton: true,
+                hasCustomColors: true,
+                colors: [secondaryBlue, lighter, blue],
+              ),
+              ListTileShimmer(
+                hasBottomBox: true,
+                isDarkMode: false,
+                isDisabledButton: true,
+                hasCustomColors: true,
+                colors: [secondaryBlue, lighter, blue],
+              ),
+              ListTileShimmer(
+                hasBottomBox: true,
+                isDarkMode: false,
+                isDisabledButton: true,
+                hasCustomColors: true,
+                colors: [secondaryBlue, lighter, blue],
+              ),
+              ListTileShimmer(
+                hasBottomBox: true,
+                isDarkMode: false,
+                isDisabledButton: true,
+                hasCustomColors: true,
+                colors: [secondaryBlue, lighter, blue],
+              ),
+              ListTileShimmer(
+                hasBottomBox: true,
+                isDarkMode: false,
+                isDisabledButton: true,
+                hasCustomColors: true,
+                colors: [secondaryBlue, lighter, blue],
+              )
+            ],
           );
+    
         },
       ),
     );

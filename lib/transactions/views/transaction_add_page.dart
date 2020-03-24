@@ -1,6 +1,7 @@
 import 'package:ctrl_money/account/models/bank_account_dto.dart';
 import 'package:ctrl_money/account/repositories/bank_account_repository.dart';
 import 'package:ctrl_money/account/stores/bank_account_store.dart';
+import 'package:ctrl_money/home/stores/home_store.dart';
 import 'package:ctrl_money/shared/components/select.dart';
 import 'package:ctrl_money/shared/models/transaction_dto.dart';
 import 'package:ctrl_money/shared/models/user.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 
 class TransactionAddPage extends StatefulWidget {
   @override
@@ -28,7 +30,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   User _user;
   int _type = 1;
   int idBankAccount;
-
+  HomeStore _homeStore;
   @override
   void initState() {
     _user = User.instance;
@@ -51,6 +53,12 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
           _bankAccountStore.bankAccountDto = _bankAccountDto;
           
           _bankAccountStore.update();
+        }else{
+          if (_value.idTransactionType == 1) {
+            _homeStore.pendingExpenses += _value.amount;
+          } else {
+            _homeStore.pendingEarnings += _value.amount;
+          }          
         }
         _transactionStore.dto = TransactionDto();
         _transactionStore.selectedStatus = null;
@@ -95,6 +103,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
 
   @override
   Widget build(BuildContext context) {
+    _homeStore = Provider.of<HomeStore>(context);
     return Scaffold(
       backgroundColor: darker,
       floatingActionButton: Observer(builder: (_) {

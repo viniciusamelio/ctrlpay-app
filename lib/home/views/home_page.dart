@@ -18,6 +18,7 @@ import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   FlutterMoneyFormatter _earningsFormatter;
   @override
   void initState() {
-    _homeStore = HomeStore(HomeReposiory(CustomDio()));
+    
     _userStore = UserStore(UserRepository(CustomDio()), AuthStorage());
     _user = User.instance;
     when((_) => _userStore.currentUserRequest.value != null, () {
@@ -104,6 +105,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _homeStore = Provider.of<HomeStore>(context);
     _accountsList = <Widget>[
       Padding(
         padding: EdgeInsets.all(20),
@@ -159,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                             if (_homeStore.pendingRequest.status !=
                                 FutureStatus.pending) {
                               return Text(
-                                  "${_expensesFormatter?.output?.nonSymbol ?? '0,00'}",
+                                  "${moneyMask(_homeStore.pendingExpenses)}",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.red[400],
@@ -258,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                             if (_homeStore.pendingRequest.status !=
                                 FutureStatus.pending) {
                               return Text(
-                                  "${_earningsFormatter?.output?.nonSymbol ?? '0,00'}",
+                                  "${moneyMask(_homeStore.pendingEarnings)}",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.green,
