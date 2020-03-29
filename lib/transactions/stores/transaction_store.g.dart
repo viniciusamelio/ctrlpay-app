@@ -139,4 +139,11 @@ mixin _$TransactionStore on _TransactionStore, Store {
   Future<void> listPending(int idUser) {
     return _$listPendingAsyncAction.run(() => super.listPending(idUser));
   }
+
+  @override
+  String toString() {
+    final string =
+        'selectedStatus: ${selectedStatus.toString()},transactionType: ${transactionType.toString()},selectedCategory: ${selectedCategory.toString()},addRequest: ${addRequest.toString()},updateRequest: ${updateRequest.toString()},listRequest: ${listRequest.toString()}';
+    return '{$string}';
+  }
 }

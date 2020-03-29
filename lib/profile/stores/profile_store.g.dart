@@ -88,4 +88,11 @@ mixin _$ProfileStore on _ProfileStore, Store {
       _$_ProfileStoreActionController.endAction(_$actionInfo);
     }
   }
+
+  @override
+  String toString() {
+    final string =
+        'avatar: ${avatar.toString()},imagePickerRequest: ${imagePickerRequest.toString()},updateRequest: ${updateRequest.toString()}';
+    return '{$string}';
+  }
 }

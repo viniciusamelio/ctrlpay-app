@@ -125,4 +125,11 @@ mixin _$AuthStore on _AuthStore, Store {
   Future saveUser(UserDto user) {
     return _$saveUserAsyncAction.run(() => super.saveUser(user));
   }
+
+  @override
+  String toString() {
+    final string =
+        'loginDto: ${loginDto.toString()},response: ${response.toString()},keepConnectedResponse: ${keepConnectedResponse.toString()},visiblePassword: ${visiblePassword.toString()},keepConnected: ${keepConnected.toString()}';
+    return '{$string}';
+  }
 }

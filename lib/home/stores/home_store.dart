@@ -28,6 +28,8 @@ abstract class _HomeStore with Store{
   double pendingEarnings = 0;
   @observable
   double pendingExpenses = 0;
+  @observable
+  bool visibleTotalAmount = false;
 
   
 }

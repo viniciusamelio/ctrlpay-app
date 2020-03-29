@@ -77,10 +77,35 @@ mixin _$HomeStore on _HomeStore, Store {
     }, _$pendingExpensesAtom, name: '${_$pendingExpensesAtom.name}_set');
   }
 
+  final _$visibleTotalAmountAtom = Atom(name: '_HomeStore.visibleTotalAmount');
+
+  @override
+  bool get visibleTotalAmount {
+    _$visibleTotalAmountAtom.context
+        .enforceReadPolicy(_$visibleTotalAmountAtom);
+    _$visibleTotalAmountAtom.reportObserved();
+    return super.visibleTotalAmount;
+  }
+
+  @override
+  set visibleTotalAmount(bool value) {
+    _$visibleTotalAmountAtom.context.conditionallyRunInAction(() {
+      super.visibleTotalAmount = value;
+      _$visibleTotalAmountAtom.reportChanged();
+    }, _$visibleTotalAmountAtom, name: '${_$visibleTotalAmountAtom.name}_set');
+  }
+
   final _$getPendingAsyncAction = AsyncAction('getPending');
 
   @override
   Future<void> getPending(int idUser) {
     return _$getPendingAsyncAction.run(() => super.getPending(idUser));
+  }
+
+  @override
+  String toString() {
+    final string =
+        'slideIndex: ${slideIndex.toString()},pendingRequest: ${pendingRequest.toString()},pendingEarnings: ${pendingEarnings.toString()},pendingExpenses: ${pendingExpenses.toString()},visibleTotalAmount: ${visibleTotalAmount.toString()}';
+    return '{$string}';
   }
 }

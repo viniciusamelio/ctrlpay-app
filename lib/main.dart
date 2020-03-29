@@ -6,6 +6,7 @@ import 'package:ctrl_money/home/repositories/home_repository.dart';
 import 'package:ctrl_money/home/views/home_page.dart';
 import 'package:ctrl_money/profile/views/profile_edit_page.dart';
 import 'package:ctrl_money/profile/views/profile_page.dart';
+import 'package:ctrl_money/report/views/report_page.dart';
 import 'package:ctrl_money/shared/styles/colors.dart';
 import 'package:ctrl_money/shared/utils/custom_dio.dart';
 import 'package:ctrl_money/signup/views/signup_page.dart';
@@ -61,7 +62,8 @@ class MyApp extends StatelessWidget {
             '/transaction/add': (context) => TransactionAddPage(),
             '/transaction': (context) => TransactionListPage(),
             '/transaction/pending': (context) => TransactionListPendingPage(),
-            '/transaction/edit': (context) => TransactionEditPage()
+            '/transaction/edit': (context) => TransactionEditPage(),
+            '/report': (context) => ReportPage()
           },
         ));
   }

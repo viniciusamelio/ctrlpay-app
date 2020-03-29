@@ -98,4 +98,11 @@ mixin _$UserStore on _UserStore, Store {
   Future<void> logout() {
     return _$logoutAsyncAction.run(() => super.logout());
   }
+
+  @override
+  String toString() {
+    final string =
+        'getRequest: ${getRequest.toString()},currentUserRequest: ${currentUserRequest.toString()},logoutRequest: ${logoutRequest.toString()},user: ${user.toString()}';
+    return '{$string}';
+  }
 }

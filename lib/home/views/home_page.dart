@@ -30,27 +30,18 @@ class _HomePageState extends State<HomePage> {
   UserStore _userStore;
   User _user;
   List<Widget> _accountsList;
-  FlutterMoneyFormatter _expensesFormatter;
-  FlutterMoneyFormatter _earningsFormatter;
   @override
   void initState() {
-    
     _userStore = UserStore(UserRepository(CustomDio()), AuthStorage());
     _user = User.instance;
-    when((_) => _userStore.currentUserRequest.value != null, () {
-      _userStore.user =
-          UserDto.fromJson(jsonDecode(_userStore.currentUserRequest.value));
-      _user.data = _userStore.user;
-      _homeStore.getPending(_user.data.id);
-    });
-
+    _homeStore = HomeStore(HomeReposiory(CustomDio()));
     reaction((_) => _userStore.logoutRequest.status, (_) {
       FutureStatus status = _userStore.logoutRequest.status;
       if (status == FutureStatus.fulfilled) {
         Navigator.of(context)
             .pushNamedAndRemoveUntil('/login', ModalRoute.withName('/login'));
       }
-    });        
+    });
 
     reaction((_) => _homeStore.pendingRequest.status, (_) {
       FutureStatus status = _homeStore.pendingRequest.status;
@@ -67,32 +58,36 @@ class _HomePageState extends State<HomePage> {
                   .where((e) => e.idTransactionType == 2)
                   .toList()[0]
                   .amount;
-              _earningsFormatter = FlutterMoneyFormatter(
-                  amount: _homeStore.pendingEarnings,
-                  settings: MoneyFormatterSettings(
-                      decimalSeparator: ',', thousandSeparator: '.'));
             }
             if (hasPendingExpenses) {
               _homeStore.pendingExpenses = value
                   .where((e) => e.idTransactionType == 1)
                   .toList()[0]
                   .amount;
-              _expensesFormatter = FlutterMoneyFormatter(
-                  amount: _homeStore.pendingExpenses,
-                  settings: MoneyFormatterSettings(
-                      decimalSeparator: ',', thousandSeparator: '.'));
             }
           }
         }
       }
     });
     super.initState();
+
+    when((_) => _userStore.currentUserRequest.value != null, () {
+      if (_userStore.currentUserRequest.status == FutureStatus.fulfilled &&
+          _userStore.currentUserRequest.value != null) {
+        _userStore.user =
+            UserDto.fromJson(jsonDecode(_userStore.currentUserRequest.value));
+        _user.data = _userStore.user;
+        _homeStore.getPending(_user.data.id);
+      }
+    });
   }
 
   @override
   void didChangeDependencies() {
     if (_user.data.id != null) {
       _userStore.get(_user.data.id);
+    }else{
+       _homeStore.getPending(_user.data.id);
     }
     super.didChangeDependencies();
   }
@@ -186,17 +181,17 @@ class _HomePageState extends State<HomePage> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Observer(builder: (_) {
-                    if(_homeStore.pendingExpenses!= 0){
+                    if (_homeStore.pendingExpenses != 0) {
                       return FlatButton(
-                      child: Text(
-                        'Revisar',
-                        style: TextStyle(color: primaryText, fontSize: 15),
-                      ),
-                      color: blue,
-                      onPressed: () => Navigator.pushNamed(
-                          context, '/transaction/pending',
-                          arguments: _user.data.id),
-                    );
+                        child: Text(
+                          'Revisar',
+                          style: TextStyle(color: primaryText, fontSize: 15),
+                        ),
+                        color: blue,
+                        onPressed: () => Navigator.pushNamed(
+                            context, '/transaction/pending',
+                            arguments: _user.data.id),
+                      );
                     }
                     return Container();
                   }),
@@ -379,16 +374,37 @@ class _HomePageState extends State<HomePage> {
                           Text('R\$',
                               style: TextStyle(
                                   color: secondaryText, fontSize: 18)),
-                          Text('${moneyMask(_user.data.totalAmount) ?? '0,00'}',
-                              style: TextStyle(
-                                  color: primaryText,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w800)),
-                          IconButton(
-                            icon: Icon(FontAwesomeIcons.solidEye),
-                            color: secondaryText,
-                            onPressed: () {},
-                          )
+                          Observer(builder: (_) {
+                            if (_homeStore.pendingRequest.status ==
+                                FutureStatus.fulfilled) {
+                              if (_homeStore.visibleTotalAmount) {
+                                return Text(
+                                  '${moneyMask(_user.data.totalAmount) ?? '0,00'}',
+                                  style: TextStyle(
+                                      color: primaryText,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w800),
+                                );
+                              }
+                              return Container(
+                                height: 5,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Colors.white),
+                              );
+                            }
+                            return CircularProgressIndicator(
+                              backgroundColor: blue,
+                            );
+                          }),
+                          Observer(builder: (_) {
+                            return IconButton(
+                              icon: !_homeStore.visibleTotalAmount ? Icon(FontAwesomeIcons.eye) : Icon(FontAwesomeIcons.eyeSlash),
+                              color: secondaryText,
+                              onPressed: () => _homeStore.visibleTotalAmount = !_homeStore.visibleTotalAmount,
+                            );
+                          })
                         ],
                       ),
                       Row(
@@ -524,11 +540,9 @@ class _HomePageState extends State<HomePage> {
                 icon: Icon(FontAwesomeIcons.wallet, color: primaryText),
                 title: 'Carteira'),
             NavigationBlock(
-                icon: Icon(FontAwesomeIcons.bullseye, color: primaryText),
-                title: 'Objetivos'),
-            NavigationBlock(
+                action:() => Navigator.pushNamed(context, '/report')  ,
                 icon: Icon(FontAwesomeIcons.chartBar, color: primaryText),
-                title: 'Relatórios'),
+                title: 'Relatório'),
             NavigationBlock(
                 action: () => Navigator.pushNamed(context, '/profile'),
                 icon: Icon(FontAwesomeIcons.solidUser, color: primaryText),

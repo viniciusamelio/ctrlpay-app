@@ -49,4 +49,11 @@ mixin _$SignUpStore on _SignUpStore, Store {
   Future<void> add() {
     return _$addAsyncAction.run(() => super.add());
   }
+
+  @override
+  String toString() {
+    final string =
+        'visiblePassword: ${visiblePassword.toString()},request: ${request.toString()}';
+    return '{$string}';
+  }
 }

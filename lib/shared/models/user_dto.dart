@@ -5,7 +5,7 @@ class UserDto {
   String birthDate;
   String avatar;
   String message;
-  double totalAmount;
+  double totalAmount = 0;
 
   UserDto({this.id, this.name, this.email, this.birthDate, this.avatar});
 

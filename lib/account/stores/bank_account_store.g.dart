@@ -247,4 +247,11 @@ mixin _$BankAccountStore on _BankAccountStore, Store {
     return _$getBankAccountTransactionsAsyncAction
         .run(() => super.getBankAccountTransactions(id, limit: limit));
   }
+
+  @override
+  String toString() {
+    final string =
+        'updateRequest: ${updateRequest.toString()},categoryListRequest: ${categoryListRequest.toString()},listRequest: ${listRequest.toString()},addRequest: ${addRequest.toString()},getRequest: ${getRequest.toString()},currentTransactionAmountRequest: ${currentTransactionAmountRequest.toString()},bankAccountTransactionsRequest: ${bankAccountTransactionsRequest.toString()},selectedBankAccountCategory: ${selectedBankAccountCategory.toString()},earning: ${earning.toString()},expense: ${expense.toString()}';
+    return '{$string}';
+  }
 }
