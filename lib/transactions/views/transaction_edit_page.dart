@@ -1,5 +1,6 @@
 import 'package:ctrl_money/account/repositories/bank_account_repository.dart';
 import 'package:ctrl_money/account/stores/bank_account_store.dart';
+import 'package:ctrl_money/home/stores/home_store.dart';
 import 'package:ctrl_money/shared/models/transaction_dto.dart';
 import 'package:ctrl_money/shared/models/user.dart';
 import 'package:ctrl_money/shared/repositories/transaction_repository.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:progress_indicators/progress_indicators.dart';
+import 'package:provider/provider.dart';
 
 class TransactionEditPage extends StatefulWidget {
   @override
@@ -24,6 +26,7 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
   BankAccountStore _bankAccountStore;
   FlutterMoneyFormatter _amountFormatter;
   bool loaded = false;
+  HomeStore _homeStore;
   User _user;
   @override
   void initState() {
@@ -35,9 +38,11 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
         if (_transactionStore.dto.idTransactionType == 1) {
           _bankAccountStore.bankAccountDto.totalAmount -= _transactionStore.dto.amount;
           _user.data.totalAmount -= _transactionStore.dto.amount;
+          _homeStore.pendingExpenses -= _transactionStore.dto.amount;
         } else {
           _bankAccountStore.bankAccountDto.totalAmount += _transactionStore.dto.amount;
           _user.data.totalAmount += _transactionStore.dto.amount;
+          _homeStore.pendingEarnings -= _transactionStore.dto.amount;
         }
         _bankAccountStore.update();
         setState(() {
@@ -80,6 +85,7 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    _homeStore = Provider.of<HomeStore>(context);
     final screen = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: darker,

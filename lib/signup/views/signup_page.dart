@@ -36,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
         _authStore.loginDto.password = _signUpStore.dto.password;
         await _authStore.login();
       } else if (status == FutureStatus.rejected) {
-        _showError(_signUpStore.request.result);
+        _showError(_signUpStore.request.result.toString());
       }
     });
 
@@ -44,9 +44,9 @@ class _SignUpPageState extends State<SignUpPage> {
       FutureStatus status = _authStore.response.status;
       if (status == FutureStatus.fulfilled) {
         _authStore.saveUser(_authStore.response.value);
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushNamedAndRemoveUntil(context,'/home',ModalRoute.withName('/'));
       } else if (status == FutureStatus.rejected) {
-        _showError(_authStore.response.result['message']);
+        _showError("Email já cadastrado!");
       }
     });
 

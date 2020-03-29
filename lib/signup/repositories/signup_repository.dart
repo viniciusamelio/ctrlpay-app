@@ -12,8 +12,8 @@ class SignUpRepository {
     try {
       final response = await _dio.post("$url/user", data: dto.toJson());
       return SignUpResponse.fromJson(response.data);
-    } catch (e) {
-      rethrow;
+    }on DioError catch ( e) {
+      return SignUpResponse.fromJson({"message":e.message});
     }
   }
 }

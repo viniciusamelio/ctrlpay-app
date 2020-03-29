@@ -27,8 +27,7 @@ class _ReportPageState extends State<ReportPage> {
     super.initState();
     reaction((_) => _reportStore.amountReportRequest.status, (_) {
       FutureStatus status = _reportStore.amountReportRequest.status;
-      print(status);
-      if (status == FutureStatus.fulfilled) {
+      if (status == FutureStatus.fulfilled && _reportStore.amountReportRequest.value != null) {
         final value = _reportStore.amountReportRequest.value;
         Navigator.push(
             context,

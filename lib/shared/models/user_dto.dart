@@ -16,7 +16,7 @@ class UserDto {
     birthDate = json['birth_date'];
     avatar = json['avatar'];
     message = json['message'];
-    totalAmount = double.tryParse(json['total_amount'].toString());
+    totalAmount = json['total_amount'] != null ? double.tryParse(json['total_amount'].toString()) : 0;
   }
 
   Map<String, dynamic> toJson() {

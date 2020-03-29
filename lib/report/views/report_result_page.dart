@@ -44,7 +44,7 @@ class _ReportPageResultState extends State<ReportPageResult> {
               gridDelegate:
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
               children: <Widget>[
-                Container(
+                _earnings!= null ? Container(
                   margin: EdgeInsets.all(10),
                   padding: const EdgeInsets.all(10),
                   height: 140,
@@ -71,8 +71,8 @@ class _ReportPageResultState extends State<ReportPageResult> {
                               fontWeight: FontWeight.w600))
                     ],
                   ),
-                ),
-                Container(
+                ) : Container(),
+                _expenses!= null ?Container(
                   margin: EdgeInsets.all(10),
                   padding: const EdgeInsets.all(10),
                   height: 140,
@@ -99,7 +99,7 @@ class _ReportPageResultState extends State<ReportPageResult> {
                               fontWeight: FontWeight.w600))
                     ],
                   ),
-                ),
+                ) : Container(),
               ],
             )
           : Padding(

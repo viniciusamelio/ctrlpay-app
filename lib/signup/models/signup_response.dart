@@ -6,6 +6,7 @@ class SignUpResponse {
   String avatar;
   String createdAt;
   String updatedAt;
+  String message;
 
   SignUpResponse(
       {this.id,
@@ -24,6 +25,7 @@ class SignUpResponse {
     avatar = json['avatar'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
